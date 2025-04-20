@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "chat-service", "chat-service.csproj", "{9F7512F6-3317-4670-9A9E-99ED5BDEB0B5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C864105D-2B56-42B1-A772-754E25B7E658}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shared-libraries", "..\shared-libraries\shared-libraries.csproj", "{1FB30362-5D69-409A-AE5D-0755B70836DE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F7512F6-3317-4670-9A9E-99ED5BDEB0B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F7512F6-3317-4670-9A9E-99ED5BDEB0B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F7512F6-3317-4670-9A9E-99ED5BDEB0B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F7512F6-3317-4670-9A9E-99ED5BDEB0B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FB30362-5D69-409A-AE5D-0755B70836DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FB30362-5D69-409A-AE5D-0755B70836DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FB30362-5D69-409A-AE5D-0755B70836DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FB30362-5D69-409A-AE5D-0755B70836DE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BAE3D813-C966-49CF-B970-8A00B9F1409C}
+	EndGlobalSection
+EndGlobal
