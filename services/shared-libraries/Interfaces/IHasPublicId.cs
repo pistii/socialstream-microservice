@@ -1,4 +1,4 @@
-﻿namespace shared_libraries.Models
+﻿namespace shared_libraries.Interfaces
 {
     public interface IHasPublicId
     {

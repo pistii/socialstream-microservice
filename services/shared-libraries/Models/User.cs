@@ -1,4 +1,6 @@
 ﻿
+using shared_libraries.Interfaces;
+
 namespace shared_libraries.Models
 {
     public partial class User : IHasPublicId

@@ -36,7 +36,7 @@ namespace chat_service
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseMySql(
-                "server=mysql;user=root;password=jelszo;database=chat-service;port=3306",
+                "server=chatDb;user=root;password=jelszo;database=chat-service;port=3306",
                 ServerVersion.Parse("8.0.42"),
                 mySqlOptions => mySqlOptions.EnableRetryOnFailure());
             }

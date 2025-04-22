@@ -12,11 +12,21 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["notification-service/notification-service.csproj", "notification-service/"]
-RUN dotnet restore "./notification-service/notification-service.csproj"
-COPY . .
-WORKDIR "/src/notification-service"
+
+COPY services/notification-service/notification-service.csproj ./notification-service/
+COPY services/shared-libraries/shared-libraries.csproj ./shared-libraries/
+COPY ../GrpcServices/GrpcServices.csproj ./GrpcServices/
+
+RUN dotnet restore "notification-service/notification-service.csproj"
+
+COPY ../services ./services
+COPY ./GrpcServices ./GrpcServices
+
+WORKDIR /src/services/notification-service
+
 RUN dotnet build "./notification-service.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+#
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish

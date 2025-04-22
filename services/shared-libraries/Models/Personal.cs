@@ -35,5 +35,7 @@ namespace shared_libraries.Models
 
         [StringLength(120)]
         public string? Workplace { get; set; } = string.Empty;
+
+        public User User { get; set; }
     }
 }

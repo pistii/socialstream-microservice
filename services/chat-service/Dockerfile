@@ -11,10 +11,17 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["chat-service.csproj", "."]
-RUN dotnet restore "./chat-service.csproj"
-COPY . .
-WORKDIR "/src/."
+
+COPY services/chat-service/chat-service.csproj ./chat-service/
+COPY services/shared-libraries/shared-libraries.csproj ./shared-libraries/
+COPY GrpcServices/GrpcServices.csproj ./GrpcServices/
+
+RUN dotnet restore "chat-service/chat-service.csproj"
+
+COPY ../services ./services
+
+WORKDIR /src/services/chat-service
+
 RUN dotnet build "./chat-service.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage

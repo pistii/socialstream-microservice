@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcServices";
+
+package notification;
+
+message NotificationRequest {
+  string public_id = 1;
+  string message = 2;
+}
+
+message NotificationResponse {
+  bool success = 1;
+}
+
+service Notification {
+  rpc SendNotification (NotificationRequest) returns (NotificationResponse);
+}
+

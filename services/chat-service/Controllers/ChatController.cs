@@ -1,12 +1,10 @@
-﻿using chat_service.Auth.Helpers;
-using chat_service.DTO;
+﻿using chat_service.DTO;
 using chat_service.Helpers;
 using chat_service.Interfaces;
 using chat_service.Models;
 using chat_service.Repository;
 using chat_service.Storage;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Serilog;
 
 namespace chat_service.Controllers
