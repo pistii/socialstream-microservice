@@ -1,12 +1,12 @@
-﻿using chat_service.Interfaces.Shared;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using shared_libraries.Interfaces.Shared;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
-namespace chat_service.Models
+namespace shared_libraries.Models
 {
-    [Table("chatcontent")]
+    [Table("chatContent")]
     public class ChatContent : IHasPublicId
     {
         public ChatContent()
@@ -30,6 +30,10 @@ namespace chat_service.Models
         public virtual ChatRoom? ChatRooms { get; set; }
         [JsonIgnore]
         public virtual ChatFile? ChatFile { get; set; }
+        
+        [JsonIgnore]
+        [ForeignKey("AuthorId")]
+        public virtual Personal? Author { get; set; }
     }
 
     public enum Status

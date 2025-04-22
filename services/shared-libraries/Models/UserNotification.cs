@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using shared_libraries.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace gateway.Models
+namespace shared_libraries.Models
 {
     public class UserNotification
     {
@@ -22,10 +23,7 @@ namespace gateway.Models
         public int NotificationId { get; set; }
         public bool IsRead { get; set; }
 
-        [ForeignKey("UserId")]
-        public Personal personal { get; set; }
-
-        //[ForeignKey("NotificationId")]
-        //public Notification notification { get; set; }
+        [ForeignKey("NotificationId")]
+        public Notification? notification { get; set; }
     }
 }

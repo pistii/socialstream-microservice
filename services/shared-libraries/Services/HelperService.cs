@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace shared_libraries.Services
 {
@@ -32,7 +27,7 @@ namespace shared_libraries.Services
         {
             int minCapitalLetters = 1; //Determines minimum how many capital letters must contain
             return password.Length > 8 &&
-                (password.Where(char.IsUpper).Count() >= minCapitalLetters);
+                (password.Count(char.IsUpper) >= minCapitalLetters);
         }
 
 

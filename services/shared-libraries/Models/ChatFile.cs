@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 
-namespace chat_service.Models
+namespace shared_libraries.Models
 {
     public class ChatFile
     {

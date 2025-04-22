@@ -1,11 +1,11 @@
-﻿using chat_service.Interfaces.Shared;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using shared_libraries.Interfaces.Shared;
 
-namespace chat_service.Models
+namespace shared_libraries.Models
 {
-    [Table("chatroom")]
+    [Table("chatRoom")]
     public class ChatRoom : IHasPublicId
     {
         public ChatRoom()
@@ -13,7 +13,7 @@ namespace chat_service.Models
             PublicId = Guid.NewGuid().ToString("N");
             endedDateTime = DateTime.Now;
         }
-
+        
         [Key]
         [Column(TypeName = "int(11)")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -22,9 +22,13 @@ namespace chat_service.Models
         public string ReceiverPublicId { get; set; } = null!;
         public int senderId { get; set; }
         public int receiverId { get; set; }
-        public DateTime? startedDateTime { get; set; }
+        public DateTime? startedDateTime { get; set; } 
         public DateTime? endedDateTime { get; set; }
         [JsonIgnore]
         public virtual ICollection<ChatContent> ChatContents { get; set; } = new HashSet<ChatContent>();
+        [ForeignKey("senderId")]
+        public virtual Personal? Sender { get; set; }
+        [ForeignKey("receiverId")]
+        public virtual Personal? Author { get; set; }
     }
 }
