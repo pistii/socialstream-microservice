@@ -3,7 +3,6 @@ using shared_libraries.Auth.Helpers;
 using shared_libraries.Models;
 using gateway.Realtime.Helpers;
 using Microsoft.AspNetCore.SignalR;
-using shared_libraries.Auth;
 
 namespace gateway.Realtime.Connection
 {

@@ -33,9 +33,9 @@ namespace shared_libraries.Models
         [ForeignKey(nameof(User.PublicId))]
         public string AuthorPublicId { get; set; } = null!;
         [StringLength(100)]
-        public string AuthorAvatar { get; set; }
+        public string AuthorAvatar { get; set; } = string.Empty;
         [StringLength(300)]
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime ExpirationDate { get; set; }
         public NotificationType NotificationType { get; set; }
@@ -116,7 +116,7 @@ namespace shared_libraries.Models
         public GetNotification(Notification notification, Personal author)
         {
             this.NotificationId = notification.PublicId;
-            this.AuthorId = author.User.PublicId;
+            this.AuthorId = author.User!.PublicId;
             this.Avatar = author.avatar;
             this.Message = notification.Message;
             this.NotificationType = notification.NotificationType;

@@ -1,21 +1,16 @@
-﻿using System.Text.Json.Serialization;
-using shared_libraries.Models;
+﻿using shared_libraries.Models;
+using System.Text.Json.Serialization;
 
 namespace shared_libraries.DTOs
 {
-    public class ChatRoomDto
-    {
-
-        public string chatRoomId { get; set; } = null!;
-        public string senderId { get; set; } = null!;
-        public string receiverId { get; set; } = null!;
-        public DateTime? startedDateTime { get; set; } 
-        public DateTime? endedDateTime { get; set; } = DateTime.Now;
-        public virtual ICollection<ChatContentDto> ChatContents { get; set; } = new HashSet<ChatContentDto>();
-    }
+    
 
     public class ChatContentDto
     {
+        public ChatContentDto()
+        {
+            
+        }
         public ChatContentDto(string authorId, bool isAuthor, ChatContent chatContent)
         {
             PublicId = chatContent.PublicId;
@@ -27,11 +22,11 @@ namespace shared_libraries.DTOs
             status = chatContent.status;
         }
 
-        public string PublicId { get; set; }
-        public string AuthorId { get; set; }       
+        public string PublicId { get; set; } = null!;
+        public string AuthorId { get; set; } = null!;
         public string? Message { get; set; }
         [Newtonsoft.Json.JsonIgnore]
-        public int chatRoomId {get; set;}
+        public int chatRoomId { get; set; }
         public bool IsAuthor { get; set; }
         public DateTime SentDate { get; set; }
         [JsonConverter(typeof(JsonStringEnumConverter))]
@@ -39,8 +34,4 @@ namespace shared_libraries.DTOs
         public ChatFileDto? ChatFile { get; set; }
     }
 
-    public class ChatFileDto : ChatFile
-    {
-        public byte[]? FileData { get; set; }
-    }
 }

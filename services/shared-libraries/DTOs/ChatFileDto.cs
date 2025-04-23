@@ -1,6 +1,6 @@
-﻿using chat_service.Models;
+﻿using shared_libraries.Models;
 
-namespace chat_service.DTO
+namespace shared_libraries.DTOs
 {
     public class ChatFileDto : ChatFile
     {

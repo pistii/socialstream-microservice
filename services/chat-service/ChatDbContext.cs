@@ -1,4 +1,4 @@
-﻿using chat_service.Models;
+﻿using shared_libraries.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace chat_service

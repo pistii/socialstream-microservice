@@ -3,8 +3,11 @@ using gateway.Interfaces;
 using Grpc.Net.Client;
 using GrpcServices;
 using Microsoft.AspNetCore.Mvc;
+using dbModel = shared_libraries.Models;
+using shared_libraries.Models;
+using grpcClient = GrpcServices;
+using shared_libraries.Interfaces;
 using shared_libraries.Auth.Helpers;
-
 namespace gateway.Controllers
 {
     [ApiController]

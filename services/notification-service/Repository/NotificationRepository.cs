@@ -1,16 +1,14 @@
 ﻿using notification_service.Repository;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using notification_service.Interfaces;
-using notification_service.Models;
+using shared_libraries.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using shared_libraries.Services;
-using shared_libraries.Models;
 using shared_libraries.Interfaces;
 
 namespace notification_service.Repository
 {
-    public class NotificationRepository : GenericRepository, INotificationRepository, ITestRepository
+    public class NotificationRepository : GenericRepository, INotificationRepository
     {
         private readonly NotificationDBContext _context;
 

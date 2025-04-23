@@ -12,7 +12,7 @@ namespace shared_libraries.DTOs
             SecuritySettings = changePassword;
         }
 
-        public UserDto User { get; set; }
+        public UserDto? User { get; set; }
         public ChangePassword? SecuritySettings { get; set; }
     }
 
@@ -26,10 +26,10 @@ namespace shared_libraries.DTOs
         }
         [StringLength(40, MinimumLength = 8)]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$", ErrorMessage = "Invalid password format. Must contain at least one uppercase, one lowercase, one number.")]
-        public string? pass1 { get; set; } = string.Empty;
+        public string? pass1 { get; set; }
         
         [StringLength(40, MinimumLength = 8)]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$", ErrorMessage = "Invalid password format. Must contain at least one uppercase, one lowercase, one number.")]
-        public string? pass2 { get; set; } = string.Empty;
+        public string? pass2 { get; set; }
     }
 }

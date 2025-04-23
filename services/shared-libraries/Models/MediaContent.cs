@@ -26,7 +26,7 @@ namespace shared_libraries.Models
         [StringLength(100)]
         public string? FileName { get; set; }
         [StringLength(80)]
-        public string MediaType { get; set; }
+        public string MediaType { get; set; } = null!;
         public long FileSize { get; set; }
         [JsonIgnore]
         [ForeignKey("FK_PostId")]

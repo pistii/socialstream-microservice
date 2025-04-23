@@ -1,7 +1,7 @@
-﻿using chat_service.DTO;
 using chat_service.Helpers;
-using chat_service.Interfaces;
-using chat_service.Models;
+using shared_libraries.DTOs;
+using shared_libraries.Interfaces;
+using shared_libraries.Models;
 using chat_service.Repository;
 using chat_service.Storage;
 using Microsoft.AspNetCore.Mvc;
@@ -132,7 +132,7 @@ namespace chat_service.Controllers
             }
 
             List<string> participants = new() { senderUser.PublicId, "HARDCODED PUBLIC ID" };
-            return Ok(new ContentDto<ChatContentDto>(returnValue, participants, totalPages, currentPage, roomid));
+            return Ok(new ChatRoomWithContentDto<ChatContentDto>(returnValue, participants, totalPages, currentPage, roomid));
         }
 
 

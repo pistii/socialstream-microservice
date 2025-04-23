@@ -1,10 +1,8 @@
-﻿using chat_service.DTO;
-using chat_service.Interfaces.Shared;
-using chat_service.Interfaces;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using chat_service.Storage;
-using chat_service.Helpers;
-using chat_service.Models;
+using shared_libraries.DTOs;
+using shared_libraries.Models;
+using shared_libraries.Interfaces;
 
 namespace chat_service.Repository
 {
@@ -241,7 +239,7 @@ namespace chat_service.Repository
         //        }
         //    }
 
-            //return returnValue.ToList();
+        //return returnValue.ToList();
         //}
     }
 }

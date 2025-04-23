@@ -1,4 +1,4 @@
-﻿using chat_service.DTO;
+﻿using shared_libraries.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace chat_service.Repository

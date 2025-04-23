@@ -1,4 +1,6 @@
-﻿namespace chat_service.DTO
+﻿using Microsoft.AspNetCore.Http;
+
+namespace shared_libraries.DTOs
 {
     public class FileUploadDto
     {

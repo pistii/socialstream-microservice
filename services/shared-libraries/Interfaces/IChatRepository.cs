@@ -3,19 +3,17 @@ using shared_libraries.Models;
 
 namespace shared_libraries.Interfaces
 {
-    public interface IChatRepository<TChatRoom, TPersonal> : IGenericRepository
+    public interface IChatRepository : IGenericRepository
     {
-        Task<TChatRoom?> GetChatRoomById(int id);
-        Task<IEnumerable<ChatRoom>> GetAllChatRoomAsQueryWithLastMessage(int userId);
+        Task<ChatRoom?> GetChatRoomById(int id);
         Task<List<ChatRoomDto>> GetAllChatRoomAsQuery(string authorId, int userId);
-        Task<IEnumerable<TPersonal>> GetMessagePartnersById(List<ChatRoomDto> partnerIds, string userId);
-        Task<TChatRoom?> ChatRoomExists(int senderId, int receiverId);
+        Task<ChatRoom?> ChatRoomExists(int senderId, int receiverId);
         List<int> GetChatPartenterIds(int userId);
-        Task<TChatRoom> CreateChatRoom(int senderId, int receiverId, string receiverPublicId);
+        Task<ChatRoom> CreateChatRoom(int senderId, int receiverId, string receiverPublicId);
         List<ChatContent> GetSortedChatContent(int roomId);
-        Task<ChatRoom?> GetChatRoomByUser(int senderId1, int senderId2);
+        Task<ChatRoom?> GetChatRoomByUser(int user1, int user2);
         Task<object> AddChatFile(ChatFile fileUpload);
         Task<string> GetChatFileTypeAsync(string token);
-        Task<List<ChatContentDto>> GetChatFile(IEnumerable<ChatContentDto> returnValue);
+        //Task<List<ChatContentDto>> GetChatFile(IEnumerable<ChatContentDto> returnValue);
     }
 }

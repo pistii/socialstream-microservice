@@ -35,7 +35,6 @@
   
   <ItemGroup>
     <ProjectReference Include="..\..\GrpcServices\GrpcServices.csproj" />
-    <ProjectReference Include="..\..\shared-libraries\shared-libraries.csproj" />
     <ProjectReference Include="..\shared-libraries\shared-libraries.csproj" />
   </ItemGroup>
 

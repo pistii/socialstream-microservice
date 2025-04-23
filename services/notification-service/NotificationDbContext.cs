@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using notification_service.Models;
+using shared_libraries.Models;
 using System.Collections.Generic;
 
 namespace notification_service

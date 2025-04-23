@@ -1,8 +1,9 @@
 ﻿using GrpcServices;
 using Microsoft.AspNetCore.Mvc;
-using notification_service.Interfaces;
-using notification_service.Models;
+using dbModel = shared_libraries.Models;
+using shared_libraries.Interfaces;
 using shared_libraries.Auth.Helpers;
+using shared_libraries.Models;
 
 namespace notification_service.Controllers
 {
@@ -58,8 +59,8 @@ namespace notification_service.Controllers
             {
                 //var result = await _notificationRepository.GetByPublicIdAsync<Notification>(notificationId);
                 //var userNotification = await _notificationRepository.GetWithIncludeAsync<UserNotification, Notification>(u => u.notification, u => u.NotificationId == result.Id);
-                Models.Notification result = null;
-                var userNotification = await _notificationRepository.GetByIdAsync<UserNotification>(result.Id);
+                dbModel.Notification result = null;
+                var userNotification = await _notificationRepository.GetByIdAsync<dbModel.UserNotification>(result.Id);
 
                 if (result == null)
                 {

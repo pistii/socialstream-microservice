@@ -44,7 +44,7 @@ namespace shared_libraries.DTOs
 
         public int PostCreateEnabledToId { get; set; }
         public long? selectedStudyId { get; set; }
-        public IEnumerable<StudyDto> StudiesDto { get; set; }
+        public IEnumerable<StudyDto>? StudiesDto { get; set; }
         [JsonIgnore]
         public override bool isActivated { get; set; }
         [JsonIgnore]

@@ -1,4 +1,4 @@
-﻿using chat_service.DTO;
+﻿using shared_libraries.DTOs;
 using chat_service.Storage;
 using Google.Apis.Storage.v1.Data;
 using Google.Cloud.Storage.V1;

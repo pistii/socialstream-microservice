@@ -2,7 +2,6 @@ using GrpcServices.Services;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using notification_service;
-using notification_service.Interfaces;
 using notification_service.Repository;
 using shared_libraries.Interfaces;
 
@@ -16,7 +15,6 @@ builder.Services.AddDbContext<NotificationDBContext>(options =>
                     builder.Configuration.GetConnectionString("NotificationService"),
                     ServerVersion.Parse("10.4.20-mariadb"))); //10.4.6-mariadb
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
-builder.Services.AddScoped<ITestRepository, NotificationRepository>();
 
 builder.Services.AddGrpc();
 

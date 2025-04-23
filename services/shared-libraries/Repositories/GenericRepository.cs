@@ -1,15 +1,18 @@
-﻿using shared_libraries.Interfaces.Shared;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore;
 using shared_libraries.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace chat_service.Repository
+namespace shared_libraries.Repositories
 {
-    public class GenericRepository : IGenericRepository
+    public class GenericRepository<TContext> : IGenericRepository where TContext : DbContext
     {
 
-        private readonly ChatDbContext _context;
-        public GenericRepository(ChatDbContext context)
+        private readonly TContext _context;
+        public GenericRepository(TContext context)
         {
             _context = context;
         }
@@ -56,7 +59,7 @@ namespace chat_service.Repository
             _context.Set<T>().Update(entity);
         }
 
-        public async Task UpdateThenSaveAsync<T>(T entity) where T : class 
+        public async Task UpdateThenSaveAsync<T>(T entity) where T : class
         {
             _context.Set<T>().Update(entity);
             await SaveAsync();

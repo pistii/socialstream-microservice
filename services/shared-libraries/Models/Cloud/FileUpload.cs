@@ -1,4 +1,6 @@
-﻿namespace shared_libraries.Models.Cloud
+﻿using Microsoft.AspNetCore.Http;
+
+namespace shared_libraries.Models.Cloud
 {
     public class FileUpload
     {

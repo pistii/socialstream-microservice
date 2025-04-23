@@ -60,7 +60,7 @@ namespace shared_libraries.Models
         public int FK_Id { get; set; }
         [Column(TypeName = "int(11)")]
         public int Status { get; set; }
-        public Friend friendship { get; set; }
+        public Friend? friendship { get; set; }
     }
 
 }
