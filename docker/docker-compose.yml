@@ -116,7 +116,7 @@ services:
         ports:
          - "4003:3306"
         volumes:
-         - user-mysql-data:/var/lib/mysql
+         - friend-mysql-data:/var/lib/mysql
          - ../services/friend-service/mysql-init:/docker-entrypoint-initdb.d
         networks:
          - backend-network
@@ -135,6 +135,7 @@ services:
          - notification-service
          - chat-service
          - user-service
+         - friend-service
         networks:
          - backend-network
 
@@ -145,4 +146,4 @@ volumes:
  chat-mysql-data:
  notification-mysql-data:
  user-mysql-data:
- friend-mysql-data:   
+ friend-mysql-data:

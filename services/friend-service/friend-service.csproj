@@ -27,10 +27,6 @@
   </ItemGroup>
 
 
-  <ItemGroup>
-    <ProjectReference Include="..\GrpcServices\GrpcServices.csproj" />
-    <ProjectReference Include="..\services\shared-libraries\shared-libraries.csproj" />
-  </ItemGroup>
 
 
 
@@ -46,6 +42,14 @@
 
   <ItemGroup>
     <Folder Include="Repositories\" />
+  </ItemGroup>
+
+
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\GrpcServices\GrpcServices.csproj" />
+    <ProjectReference Include="..\shared-libraries\shared-libraries.csproj" />
   </ItemGroup>
   <PropertyGroup>
     <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>

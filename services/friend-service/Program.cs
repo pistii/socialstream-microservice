@@ -6,17 +6,20 @@ using friend_service;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var services = builder.Services;
 
-builder.Services.AddControllers();
-builder.Services.AddGrpc();
+services.AddControllers();
+services.AddGrpc();
 
-builder.Services.AddDbContext<FriendDbContext>(options =>
+services.AddDbContext<FriendDbContext>(options =>
     options.UseMySql(
         builder.Configuration.GetConnectionString("FriendService"),
         ServerVersion.Parse("8.0.42"),
         mySqlOptions => mySqlOptions.EnableRetryOnFailure()
     )
 );
+
+//services.AddScoped<IFriendRepository, FriendRepository>();
 
 var app = builder.Build();
 

@@ -8,7 +8,7 @@ namespace shared_libraries.Models
     /// <summary>
     /// Model of a Friendship
     /// </summary>
-    [Table("Friend")]
+    [Table("friend")]
     public partial class Friend
     {
         public Friend()
@@ -45,13 +45,12 @@ namespace shared_libraries.Models
 
         public DateTime? FriendshipSince { get; set; }
         public FriendshipStatus? friendship_status { get; set; }
-        [JsonIgnore]
-        public virtual ICollection<Personal>? GetPersonals { get; set; } = new HashSet<Personal>();
     }
 
     /// <summary>
     /// Reference table of Friend
     /// </summary>
+    [Table("friendshipstatus")]
     public partial class FriendshipStatus
     {
         [Key]

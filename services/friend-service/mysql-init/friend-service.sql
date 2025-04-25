@@ -4,7 +4,7 @@ USE `friend-service`;
 
 
 CREATE TABLE `friend` (
-  `FriendshipID` int(11) NOT NULL,
+  `FriendshipID` int(11) AUTO_INCREMENT NOT NULL,
   `UserId` int(11) NOT NULL,
   `FriendId` int(11) DEFAULT NULL,
   `StatusId` int(11) NOT NULL,
@@ -26,3 +26,7 @@ INSERT INTO `friendshipstatus` (`FK_Id`, `Status`) VALUES
 (4, 'Rejected'),
 (5, 'Accept'),
 (6, 'Blocked');
+
+
+INSERT INTO `friend` (`UserId`, `FriendId`, `StatusId`, `FriendshipSince`) VALUES
+(1, 2, 1, '2025-04-25 11:09');
