@@ -9,8 +9,8 @@ namespace gateway.Realtime.Connection
     [Authorize]
     public class ConnectionHandler<T> : Hub<T> where T : class
     {
-        IMapConnections _connections;
-        IJwtUtils _jwtUtils;
+        private readonly IMapConnections _connections;
+        private readonly IJwtUtils _jwtUtils;
         public ConnectionHandler(IJwtUtils utils, IMapConnections mapConnections)
         {
             _jwtUtils = utils;

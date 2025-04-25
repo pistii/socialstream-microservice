@@ -1,5 +1,6 @@
-using gateway.Interfaces;
+using shared_libraries.Interfaces;
 using GrpcServices.Services;
+using notification_service.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,13 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddGrpc();
-//builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
 app.MapGrpcService<NotificationService>();
+app.MapGrpcService<UserService>();
+
 
 //builder.WebHost.UseUrls("http://*:8080");
 
