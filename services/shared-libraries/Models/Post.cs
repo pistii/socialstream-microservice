@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace shared_libraries.Models
 {
-    [Table("Post")]
+    [Table("post")]
     //[PrimaryKey(nameof(Id))] EF attribute -> ha nem jó, akkor a build során kell megadni
     public partial class Post
     {

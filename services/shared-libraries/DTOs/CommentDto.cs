@@ -14,7 +14,7 @@ namespace shared_libraries.DTOs
         public CommentDto(Comment comment, Personal author)
         {
             this.Comment = new(
-                comment.AuthorPerson!.User!.PublicId == author.User!.PublicId,
+                true,//comment.AuthorPerson!.User!.PublicId == author.User!.PublicId,
                 comment.PublicId,
                 comment.CommentDate,
                 comment.CommentText ?? "",

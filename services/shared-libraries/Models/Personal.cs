@@ -68,10 +68,10 @@ namespace shared_libraries.Models
         [JsonIgnore]
         public virtual ICollection<PersonalChatRoom> PersonalChatRooms { get; set; } = new HashSet<PersonalChatRoom>();
 
-        [JsonIgnore]
-        public virtual ICollection<PersonalPost>? SentPosts { get; set; } // AuthorId
-        [JsonIgnore]
-        public virtual ICollection<PersonalPost>? ReceivedPosts { get; set; }  // PostedToId
+        //[JsonIgnore]
+        //public virtual ICollection<PersonalPost>? SentPosts { get; set; } // AuthorId
+        //[JsonIgnore]
+        //public virtual ICollection<PersonalPost>? ReceivedPosts { get; set; }  // PostedToId
 
         [JsonIgnore]
         public virtual Settings? Settings { get; set; } = new();

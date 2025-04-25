@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace shared_libraries.Models
 {
-    [Table("PersonalPost")]
+    [Table("personalpost")]
     public class PersonalPost
     {
         [Key]
@@ -11,10 +11,6 @@ namespace shared_libraries.Models
         public int AuthorId { get; set; }
         public int PostedToId { get; set; }
         public int PostId { get; set; }
-        [ForeignKey("AuthorId")]
-        public virtual Personal? Author { get; set; }
-        [ForeignKey("PostedToId")]
-        public virtual Personal? Receiver { get; set; }
         public virtual Post? Posts { get; set; }
     }
 }

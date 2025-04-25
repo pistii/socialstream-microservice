@@ -25,8 +25,7 @@ namespace shared_libraries.Models
         public DateTime? LastModified { get; set; }
         [JsonIgnore]
         public Post? Post { get; set; }
-        [ForeignKey("FK_AuthorId")]
-        public Personal? AuthorPerson { get; set; }
+        //public Personal? AuthorPerson { get; set; }
         public virtual ICollection<CommentReaction> CommentReactions { get; set; } = new HashSet<CommentReaction>();
     }
 }
