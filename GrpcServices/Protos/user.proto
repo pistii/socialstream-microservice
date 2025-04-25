@@ -1,0 +1,28 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcServices";
+
+package user;
+
+message UserRequest {
+    string public_id = 1;
+}
+
+message UserResponse {
+	bool success = 1;
+	string publicId = 2;
+	string avatar = 3;
+	string name = 4;
+}
+
+message UserBase {
+	string publicId = 1;
+	string avatar = 2;
+	string name = 3;
+}
+
+
+service User {
+  rpc GetUser (UserRequest) returns (UserResponse);
+
+}
