@@ -120,6 +120,36 @@ services:
          - ../services/friend-service/mysql-init:/docker-entrypoint-initdb.d
         networks:
          - backend-network
+         
+    #post service
+    post-service:
+        build:
+            context: ../
+            dockerfile: services/post-service/Dockerfile
+        container_name: post-service
+        ports: 
+            - "5004:8080"
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ConnectionStrings__DefaultConnection=server=postDb;user=root;password=jelszo;database=post-service
+        depends_on:
+            - postDb
+        networks:
+            - backend-network
+
+    postDb:
+        image: mysql:8.0
+        container_name: postDb
+        environment:
+            MYSQL_ROOT_PASSWORD: jelszo
+            MYSQL_DATABASE: post-service
+        ports:
+            - "4004:3306"
+        volumes:
+            - post-mysql-data:/var/lib/mysql
+            - ../services/post-service/mysql-init:/docker-entrypoint-initdb.d
+        networks:
+            - backend-network
 
     #gateway-api
     gateway:
@@ -136,6 +166,7 @@ services:
          - chat-service
          - user-service
          - friend-service
+         - post-service
         networks:
          - backend-network
 
@@ -147,3 +178,4 @@ volumes:
  notification-mysql-data:
  user-mysql-data:
  friend-mysql-data:
+ post-mysql-data:   
