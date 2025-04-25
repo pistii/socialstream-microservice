@@ -91,6 +91,35 @@ services:
         networks:
          - backend-network
 
+    #friend service
+    friend-service:
+        build:
+         context: ../
+         dockerfile: services/friend-service/Dockerfile
+        container_name: friend-service
+        ports: 
+         - "5003:8080"
+        environment:
+         - ASPNETCORE_ENVIRONMENT=Development
+         - ConnectionStrings__DefaultConnection=server=friendDb;user=root;password=jelszo;database=friend-service
+        depends_on:
+         - friendDb
+        networks:
+         - backend-network
+
+    friendDb:
+        image: mysql:8.0
+        container_name: friendDb
+        environment:
+         MYSQL_ROOT_PASSWORD: jelszo
+         MYSQL_DATABASE: friend-service
+        ports:
+         - "4003:3306"
+        volumes:
+         - user-mysql-data:/var/lib/mysql
+         - ../services/friend-service/mysql-init:/docker-entrypoint-initdb.d
+        networks:
+         - backend-network
 
     #gateway-api
     gateway:
@@ -116,3 +145,4 @@ volumes:
  chat-mysql-data:
  notification-mysql-data:
  user-mysql-data:
+ friend-mysql-data:   

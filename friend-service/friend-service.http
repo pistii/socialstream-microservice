@@ -1,0 +1,6 @@
+@friend_service_HostAddress = http://localhost:5160
+
+GET {{friend_service_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
