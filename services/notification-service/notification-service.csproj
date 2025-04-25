@@ -28,12 +28,6 @@
 
   
   <ItemGroup>
-    <Folder Include="mysql-init\" />
-  </ItemGroup>
-
-
-  
-  <ItemGroup>
     <ProjectReference Include="..\..\GrpcServices\GrpcServices.csproj" />
     <ProjectReference Include="..\shared-libraries\shared-libraries.csproj" />
   </ItemGroup>

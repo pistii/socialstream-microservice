@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using shared_libraries.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace shared_libraries.Repositories
 {

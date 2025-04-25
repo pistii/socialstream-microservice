@@ -1,3 +1,5 @@
+CREATE DATABASE IF NOT EXISTS `notification-service`;
+USE `notification-service`;
 
 CREATE TABLE `notification` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
@@ -12,14 +14,19 @@ CREATE TABLE `notification` (
 PRIMARY KEY (`Id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-
 CREATE TABLE `usernotification` (
   `PK_Id` int(11) NOT NULL AUTO_INCREMENT,
   `UserId` int(11) NOT NULL,
   `NotificationId` int(11) NOT NULL,
   `IsRead` int(11) NOT NULL,
-PRIMARY KEY `PK_Id`,
-KEY `NotificationId` (`NotificationId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  PRIMARY KEY (`PK_Id`),
+  KEY `NotificationId` (`NotificationId`),
+  CONSTRAINT `fk_notification` FOREIGN KEY (`NotificationId`) REFERENCES `notification`(`Id`) ON DELETE CASCADE
+);
 
-ADD CONSTRAINT `usernotification_ibfk_1` FOREIGN KEY (`NotificationId`) REFERENCES `notification` (`Id`) ON DELETE CASCADE;
+
+INSERT INTO `notification` (`PublicId`, `AuthorId`, `AuthorPublicId`, `AuthorAvatar`, `Message`, `CreatedAt`, `ExpirationDate`, `notificationType`)
+VALUES ('notif-123', 1, 'author-123', 'avatar.jpg', 'Helló világ!', NOW(), NOW() + INTERVAL 7 DAY, 'NewPost');
+
+INSERT INTO `usernotification` (`UserId`, `NotificationId`, `IsRead`)
+VALUES (1, 1, 0);

@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<NotificationDBContext>(options =>
                 options.UseMySql(
                     builder.Configuration.GetConnectionString("NotificationService"),
-                    ServerVersion.Parse("10.4.20-mariadb"))); //10.4.6-mariadb
+                    ServerVersion.Parse("8.0.42-mariadb"))); //10.4.6-mariadb
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 
 builder.Services.AddGrpc();

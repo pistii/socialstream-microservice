@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace shared_libraries.Models
 {
+    [Table("usernotification")]
     public class UserNotification
     {
         public UserNotification()

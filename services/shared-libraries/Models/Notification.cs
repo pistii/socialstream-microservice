@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace shared_libraries.Models
 {
+    [Table("notification")]
     public class Notification : IHasPublicId
     {
         public Notification()
@@ -39,9 +40,6 @@ namespace shared_libraries.Models
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime ExpirationDate { get; set; }
         public NotificationType NotificationType { get; set; }
-        [ForeignKey("AuthorId")]
-        [JsonIgnore]
-        public virtual Personal? personal { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<UserNotification>? UserNotification { get; set; } = new HashSet<UserNotification>();

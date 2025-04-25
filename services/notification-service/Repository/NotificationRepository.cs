@@ -30,6 +30,11 @@ namespace notification_service.Repository
             GetNotification getNotification = new(notification);
             return getNotification;
         }
+        public static Task SendNotification(string message)
+        {
+            Console.WriteLine("message received in notification repository" + message);
+            return Task.CompletedTask;
+        }
 
         /// <summary>
         //  Search the Person's notifications, and create a new Dto from the inherited notification class
@@ -37,7 +42,21 @@ namespace notification_service.Repository
         /// <returns></returns>
         public async Task<List<GetNotification>> GetAllNotifications(int userId)
         {
-            return null;
+            return await _context.UserNotification
+                .Include(n => n.notification)
+                .Where(n => n.UserId == userId)
+                .Select(n => new GetNotification(
+                        n.notification!.PublicId,
+                        n.notification.AuthorPublicId,
+                        string.Empty,
+                        n.notification.CreatedAt,
+                        n.notification.Message,
+                        n.IsRead,
+                        n.notification.NotificationType,
+                        HelperService.GetEnumDescription(n.notification.NotificationType),
+                        string.Empty))
+                .ToListAsync();
+
             //return await _context.UserNotification
             //    .Include(n => n.notification)
             //        .ThenInclude(n => n.personal) //Ez a szerző 
@@ -57,10 +76,5 @@ namespace notification_service.Repository
             //    .ToListAsync();
         }
 
-        public Task SendNotification(string message)
-        {
-            Console.WriteLine("message received in notification repository" + message);
-            return Task.CompletedTask;
-        }
     }
 }
