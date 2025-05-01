@@ -2,6 +2,9 @@ using shared_libraries.Interfaces;
 using GrpcServices.Services;
 using Microsoft.EntityFrameworkCore;
 using friend_service;
+using shared_libraries.Controllers;
+using shared_libraries.Kafka;
+using friend_service.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +22,7 @@ services.AddDbContext<FriendDbContext>(options =>
     )
 );
 
-//services.AddScoped<IFriendRepository, FriendRepository>();
+services.AddScoped<IFriendRepository, FriendRepository>();
 
 var app = builder.Build();
 
