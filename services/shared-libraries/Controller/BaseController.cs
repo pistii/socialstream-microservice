@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace shared_libraries.Controller
+namespace shared_libraries.Controllers
 {
     public abstract class BaseController : ControllerBase
     {

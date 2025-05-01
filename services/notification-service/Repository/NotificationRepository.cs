@@ -5,10 +5,11 @@ using shared_libraries.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using shared_libraries.Services;
 using shared_libraries.Interfaces;
+using shared_libraries.Repositories;
 
 namespace notification_service.Repository
 {
-    public class NotificationRepository : GenericRepository, INotificationRepository
+    public class NotificationRepository : GenericRepository<NotificationDBContext>, INotificationRepository
     {
         private readonly NotificationDBContext _context;
 
