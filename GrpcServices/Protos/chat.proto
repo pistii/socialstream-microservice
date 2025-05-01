@@ -1,0 +1,95 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "GrpcServices.Protos";
+
+package chat;
+
+
+message ChatContentResponse {
+	string messagePublicId = 1;
+	int32 messageId = 2;
+	string message = 3;
+	bool isAuthor = 4;
+	google.protobuf.Timestamp sentDate = 5;
+	Status status = 6;
+	int32 authorId = 7;
+	bool success = 8;
+}
+
+message ChatRoomResponse {
+	int32 chatRoomId = 1;
+	string publicId = 2;
+	string receiverPublicId = 3;
+	int32 senderId = 4;
+	int32 receiverId = 5;
+	google.protobuf.Timestamp startedDateTime = 6;
+	google.protobuf.Timestamp endedDateTime = 7;
+	repeated ChatContentResponse Chatcontent = 8;
+}
+
+
+message GetChatRoom {
+	int32 roomId = 1;
+}
+
+message GetUserChatRoomsRequest {
+	string publicUserId = 1;
+	int32 userId = 2;
+}
+message RepeatedChatRoomDtoResponse {
+	bool success = 1;
+	bool found = 2;
+	repeated ChatRoomDtoResponse chatRoom = 3;
+}
+
+message ChatRoomDtoResponse {
+	string chatRoomId = 1;
+	string senderId = 2;
+	string receiverId = 3;
+	google.protobuf.Timestamp startedDateTime = 4;
+	google.protobuf.Timestamp endedDateTime = 5;
+	repeated ChatContentDtoResponse ChatContents = 6;
+}
+message ChatContentDtoResponse {
+	string publicId = 1;
+	string authorId = 2;
+	string message = 3;
+	int32 chatRoomId = 4;
+	bool isAuthor = 5;
+	google.protobuf.Timestamp sentDateTime = 6;
+	Status status = 7;
+}
+
+message UpdateChatContentRequest {
+	int32 publicId = 1;
+	string message = 2;
+	string authorPublicId = 3;
+	int32 authorId = 4;
+}
+
+message CreateChatContentRequest {
+	string message = 1;
+	int32 receiverId = 2;
+	int32 senderId = 3;
+	string receiverPublicId = 4;
+	Status status = 5;
+}
+
+message MessagePartnerIdsResult {
+	repeated string messagePartnerIds = 1;
+}
+
+enum Status {
+	Read = 0;
+	Sent = 1;
+	Delivered = 2;
+}
+
+service Chat {
+  rpc ChatRoomRequest (GetChatRoom) returns (ChatRoomResponse);
+  rpc SendMessageRequest (CreateChatContentRequest) returns (ChatContentResponse);
+  rpc UpdateChatContent (UpdateChatContentRequest) returns (ChatContentResponse);
+  rpc GetChatRoomById (GetChatRoom) returns (ChatRoomResponse);
+  rpc GetAllChatRoomAsQueryRequest (GetUserChatRoomsRequest) returns (RepeatedChatRoomDtoResponse);
+}

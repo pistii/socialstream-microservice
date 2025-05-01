@@ -1,4 +1,6 @@
 ﻿syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
 
 option csharp_namespace = "GrpcServices";
 
@@ -8,12 +10,39 @@ message UserRequest {
     string public_id = 1;
 }
 
-message UserResponse {
-	bool success = 1;
-	string publicId = 2;
-	string avatar = 3;
-	string name = 4;
+message UserRequestByPrivateId {
+	int32 userId = 1;
 }
+
+message UserResponse {
+	int32 userId = 1;
+	string publicId = 2;
+	string email = 3;
+	google.protobuf.StringValue secondaryEmailAddress = 4;
+	google.protobuf.Timestamp registrationDate = 5;
+	bool isActivated = 6;
+	google.protobuf.Timestamp lastOnline = 7;
+	bool isOnlineEnabled = 8;
+	
+	PersonalResponse personal = 9;
+	bool Success = 10;
+}
+
+message PersonalResponse {
+	string firstName = 1;
+	google.protobuf.StringValue middleName = 2;
+	string lastName = 3;
+	bool isMale = 4;
+	google.protobuf.StringValue placeOfResidence = 5;
+	google.protobuf.StringValue avatar = 6;
+	google.protobuf.StringValue phoneNumber = 7;
+	google.protobuf.Timestamp dateOfBirth = 8;
+	google.protobuf.StringValue placeOfBirth = 9;
+	google.protobuf.StringValue profession = 10;
+	google.protobuf.StringValue workplace = 11;
+	int32 publicStudyId = 12;
+}
+
 
 message UserBase {
 	string publicId = 1;
@@ -22,7 +51,18 @@ message UserBase {
 }
 
 
+message RepeatedChatPartnerIdsRequest {
+	repeated string chatPartnerIds = 1;
+	string userId = 2;
+}
+
+message RepeatedChatPartnersResponse {
+	repeated PersonalResponse chatPartners = 1;
+}
+
+
 service User {
   rpc GetUser (UserRequest) returns (UserResponse);
-
+  rpc GetUserByIdRequest (UserRequestByPrivateId) returns (UserResponse);
+  rpc GetMessagePartnersByUserId (RepeatedChatPartnerIdsRequest) returns (RepeatedChatPartnersResponse);
 }
