@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace shared_libraries.Models
 {
+    [Table("restriction")]
     public class Restriction
     {
         public Restriction()

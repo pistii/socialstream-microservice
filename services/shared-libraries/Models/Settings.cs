@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 
 namespace shared_libraries.Models
 {
+    [Table("settings")]
     public partial class Settings
     {
         public Settings()

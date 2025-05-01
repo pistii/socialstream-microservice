@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace shared_libraries.Models
 {
-    [Table("PersonalChatRoom")]
+    [Table("personalchatroom")]
     public class PersonalChatRoom
     {
         [Key]
@@ -12,7 +12,5 @@ namespace shared_libraries.Models
         public int FK_PersonalId { get; set; }
         public int FK_ChatRoomId { get; set; }
 
-        [JsonIgnore]
-        public virtual Personal? PersonalRoom { get; set; }
     }
 }

@@ -1,8 +1,10 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace shared_libraries.Models
 {
+    [Table("userrestriction")]
     public class UserRestriction
     {
         [Key]

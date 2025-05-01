@@ -5,7 +5,7 @@ using shared_libraries.Interfaces.Shared;
 
 namespace shared_libraries.Models
 {
-    [Table("chatRoom")]
+    [Table("chatroom")]
     public class ChatRoom : IHasPublicId
     {
         public ChatRoom()
@@ -26,9 +26,5 @@ namespace shared_libraries.Models
         public DateTime? endedDateTime { get; set; }
         [JsonIgnore]
         public virtual ICollection<ChatContent> ChatContents { get; set; } = new HashSet<ChatContent>();
-        [ForeignKey("senderId")]
-        public virtual Personal? Sender { get; set; }
-        [ForeignKey("receiverId")]
-        public virtual Personal? Author { get; set; }
     }
 }

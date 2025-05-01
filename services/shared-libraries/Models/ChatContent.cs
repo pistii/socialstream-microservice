@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace shared_libraries.Models
 {
-    [Table("chatContent")]
+    [Table("chatcontent")]
     public class ChatContent : IHasPublicId
     {
         public ChatContent()
@@ -31,9 +31,6 @@ namespace shared_libraries.Models
         [JsonIgnore]
         public virtual ChatFile? ChatFile { get; set; }
         
-        [JsonIgnore]
-        [ForeignKey("AuthorId")]
-        public virtual Personal? Author { get; set; }
     }
 
     public enum Status

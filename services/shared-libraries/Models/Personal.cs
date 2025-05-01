@@ -15,7 +15,7 @@ namespace shared_libraries.Models
         {
         }
 
-        [ForeignKey("users")]
+        [ForeignKey("User")]
         public int id { get; set; }
         
         [StringLength(30)]
@@ -23,7 +23,7 @@ namespace shared_libraries.Models
         public string firstName { get; set; } = null!;
 
         [StringLength(30)]
-        public string? middleName { get; set; }
+        public string? middleName { get; set; } = string.Empty;
         
         [StringLength(30)]
         [Required(ErrorMessage = "Last name is required")]
@@ -35,7 +35,7 @@ namespace shared_libraries.Models
         public string? avatar { get; set; } = string.Empty;
 
         [StringLength(15)]
-        public string? phoneNumber { get; set; }
+        public string? phoneNumber { get; set; } = string.Empty;
 
         public DateOnly? DateOfBirth { get; set; }
 
