@@ -10,6 +10,7 @@
 
 
   <ItemGroup>
+    <PackageReference Include="Confluent.Kafka" Version="2.10.0" />
     <PackageReference Include="Google.Protobuf" Version="3.30.2" />
     <PackageReference Include="Grpc.Net.Client" Version="2.70.0" />
     <PackageReference Include="Grpc.Tools" Version="2.71.0">
@@ -21,7 +22,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GrpcServices\GrpcServices.csproj" />
+    <ProjectReference Include="..\services\chat-service\chat-service.csproj" />
+    <ProjectReference Include="..\services\friend-service\friend-service.csproj" />
     <ProjectReference Include="..\services\notification-service\notification-service.csproj" />
+    <ProjectReference Include="..\services\post-service\post-service.csproj" />
     <ProjectReference Include="..\services\shared-libraries\shared-libraries.csproj" />
     <ProjectReference Include="..\services\user-service\user-service.csproj" />
   </ItemGroup>

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcServices.Protos";
+
+package friend;
+
+//Method to receive user's friend ids
+message GetFriendIdsRequest {
+	int32 userId = 1;
+}
+message GetFriendIdsResponse {
+	repeated int32 friends = 1;
+	bool success = 2;
+}
+
+service Friend {
+	rpc GetFriendsForUser (GetFriendIdsRequest) returns (GetFriendIdsResponse);
+}

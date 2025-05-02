@@ -1,19 +1,18 @@
-﻿using shared_libraries.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using shared_libraries.Interfaces;
 using shared_libraries.Models;
+using shared_libraries.Repositories;
 using shared_libraries.Services;
 
 namespace friend_service.Repositories
 {
-    public class FriendRepository : IFriendRepository
+    public class FriendRepository : GenericRepository<FriendDbContext>, IFriendRepository
     {
-        public void Delete(Friend request)
-        {
-            throw new NotImplementedException();
-        }
+        private readonly FriendDbContext _friendDbContext;
 
-        public Task<Friend?> FriendshipExists(Friend friendship)
+        public FriendRepository(FriendDbContext friendDbContext) : base(friendDbContext)
         {
-            throw new NotImplementedException();
+
         }
 
         public Task<IEnumerable<PersonalIsOnlineDto>> GetAll(int id)
@@ -21,14 +20,15 @@ namespace friend_service.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Personal>> GetAllFriendAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<T?> GetByIdAsync<T>(int id) where T : class
+        public async Task<IEnumerable<int>> GetAllFriendIds(int id)
         {
-            throw new NotImplementedException();
+            var listFriendIds = await _friendDbContext.Friendship
+                .Where(f => (f.FriendId == id || f.UserId == id) && f.StatusId == 1)
+                .Select(f => f.UserId == id ? f.FriendId : f.UserId)
+                .ToListAsync();
+
+            return listFriendIds;
         }
 
         public Task<IEnumerable<Personal>> GetFriendsForInitialUserData(int userId)

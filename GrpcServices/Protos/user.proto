@@ -60,9 +60,21 @@ message RepeatedChatPartnersResponse {
 	repeated PersonalResponse chatPartners = 1;
 }
 
+//Request by user ids
+message GetAllUserRequest {
+	repeated int32 userIds = 1;
+}
+message GetAllUserResponse {
+	repeated UserResponse users = 1;
+	bool success = 2;
+}
+
+
+
 
 service User {
   rpc GetUser (UserRequest) returns (UserResponse);
   rpc GetUserByIdRequest (UserRequestByPrivateId) returns (UserResponse);
   rpc GetMessagePartnersByUserId (RepeatedChatPartnerIdsRequest) returns (RepeatedChatPartnersResponse);
+  rpc GetAllUserById (GetAllUserRequest) returns (GetAllUserResponse);
 }
