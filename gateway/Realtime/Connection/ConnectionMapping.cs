@@ -74,7 +74,7 @@ namespace gateway.Realtime.Connection
     {
         public void Remove(string connectionId);
         public ConcurrentDictionary<string, int> keyValuePairs { get; }
-        public bool ContainsUser(int userId, string connectionId);
+        public bool ContainsUser(int userId, string? connectionId = null);
         public void AddConnection(string connectionId, int userId);
         int GetUserById(string connectionId);
         string[] GetConnectionsById(int userId);
