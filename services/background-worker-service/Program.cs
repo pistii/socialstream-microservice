@@ -1,4 +1,7 @@
 using shared_libraries.Kafka;
+using shared_libraries.Kafka.Handlers;
+using shared_libraries.Kafka.IServiceClient;
+using shared_libraries.Models;
 
 namespace background_worker_service
 {
@@ -13,7 +16,19 @@ namespace background_worker_service
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddHostedService<KafkaConsumerService>();
+                    services.AddSingleton<IKafkaConsumerHandler<Friend>, FriendHandler>();
+                    services.AddHostedService(provider =>
+                        new KafkaConsumerService<Friend>(
+                            provider.GetRequiredService<ILogger<KafkaConsumerService<Friend>>>(),
+                            provider.GetRequiredService<IConfiguration>(),
+                            provider.GetRequiredService<IKafkaConsumerHandler<Friend>>(),
+                            "getall-friend-topic"));
+
+
+                    services.AddHttpClient<IUserServiceClient, UserServiceClient>(client =>
+                    {
+                        client.BaseAddress = new Uri("http://user-service:8080"); // docker-compose-ban definiált service név
+                    });
                 });
     }
 }
