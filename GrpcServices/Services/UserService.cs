@@ -30,7 +30,7 @@ namespace GrpcServices.Services
                     Success = true
                 };
                 response.Users.AddRange(users.Select(
-                    u => ObjectMapper.Map<Personal, UserResponse>(u)
+                    u => ObjectMapper.Map<dbModel.User, UserResponse>(u)
                 ));
                 return response;
             }

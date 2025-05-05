@@ -69,6 +69,14 @@ message GetAllUserResponse {
 	bool success = 2;
 }
 
+message UserDetailsResponse {
+	string avatar = 1;
+	string first_name = 2;
+	string middle_name = 3;
+	string last_name = 4;
+	string public_id = 5;
+}
+
 
 
 

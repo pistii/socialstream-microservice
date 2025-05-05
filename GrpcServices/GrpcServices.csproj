@@ -24,12 +24,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\friend.proto"/>
+    <Protobuf Include="Protos\friend.proto" />
   </ItemGroup>
 
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +44,8 @@
   </ItemGroup>
   <PropertyGroup>
     <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <UserSecretsId>13adbd4f-5785-4877-9dfd-aff736ad2ec9</UserSecretsId>
   </PropertyGroup>
 
 </Project>

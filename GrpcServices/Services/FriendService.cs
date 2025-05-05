@@ -1,6 +1,7 @@
 ﻿using Grpc.Core;
 using GrpcServices.Protos;
 using shared_libraries.Interfaces;
+using dbModel = shared_libraries.Models;
 
 namespace GrpcServices.Services
 {
@@ -34,6 +35,30 @@ namespace GrpcServices.Services
                     Success = false
                 };
             }
+        }
+
+        public async override Task<FriendObj> CreateFriendshipIfNotExists(FriendObj request, ServerCallContext context)
+        {
+            var friend = new dbModel.Friend(request.ReceiverId, request.AuthorId, request.FriendshipStatusId);
+            var existing = await _friendRepository.FriendshipExists(friend);
+
+            //The other user requested before, mark them as friends.
+            if (existing != null && friend.UserId == request.ReceiverId)
+            {
+                existing.StatusId = 1;
+                await _friendRepository.UpdateThenSaveAsync<dbModel.Friend>(existing);
+            }
+            else
+            {
+                await _friendRepository.InsertSaveAsync(friend); //Save friend request
+            }
+
+            return new FriendObj()
+            {
+                FriendshipStatusId = existing.StatusId ?? 0,
+                AuthorId = existing.UserId,
+                ReceiverId = request.ReceiverId,
+            };
         }
     }
 }

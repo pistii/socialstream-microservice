@@ -13,6 +13,13 @@ message GetFriendIdsResponse {
 	bool success = 2;
 }
 
+message FriendObj { //This is not mappable object since the different property names
+	int32 receiverId = 1;
+	int32 authorId = 2;
+	int32 friendshipStatusId = 3;
+}
+
 service Friend {
-	rpc GetFriendsForUser (GetFriendIdsRequest) returns (GetFriendIdsResponse);
+	rpc GetFriendsForUser (GetFriendIdsRequest) returns (GetFriendIdsResponse); 
+	rpc CreateFriendshipIfNotExists (FriendObj) returns (FriendObj);
 }
