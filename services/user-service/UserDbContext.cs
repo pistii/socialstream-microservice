@@ -4,7 +4,7 @@ using shared_libraries.Models;
 namespace user_service
 {
 
-    public partial class UserDbContext : DbContext
+    public class UserDbContext : DbContext
     {
         public UserDbContext()
         {
@@ -21,18 +21,6 @@ namespace user_service
         public virtual DbSet<Settings> Settings { get; set; }
 
 
-        protected override async void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseMySql(
-                "server=userDb;user=root;password=jelszo;database=user-service;port=3306",
-                ServerVersion.Parse("8.0.42"),
-                mySqlOptions => mySqlOptions.EnableRetryOnFailure());
-            }
-        }
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
@@ -44,6 +32,8 @@ namespace user_service
                 entity.HasOne(p => p.personal)
                 .WithOne(p => p.User)
                 .IsRequired();
+
+                entity.HasKey(p => p.userId);
 
                 entity.HasMany(p => p.Studies)
                 .WithOne(u => u.user)
@@ -82,20 +72,12 @@ namespace user_service
                     .HasForeignKey(c => c.relationshipID);
 
 
-                entity.HasMany(_ => _.PersonalChatRooms)
-                    .WithOne(_ => _.PersonalRoom)
-                    .HasForeignKey(_ => _.FK_PersonalId);
-
                 entity.HasOne(p => p.Settings)
                     .WithOne(p => p.personal)
                     .HasForeignKey<Settings>(s => s.FK_UserId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
-            OnModelCreatingPartial(modelBuilder);
         }
-
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
     }
 }

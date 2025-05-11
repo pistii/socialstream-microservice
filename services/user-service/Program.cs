@@ -2,42 +2,71 @@ using GrpcServices.Services;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using shared_libraries;
-//using user_service.Repositories;
 using shared_libraries.Interfaces;
 using user_service;
+using user_service.Controllers;
+using shared_libraries.Controllers;
+using shared_libraries.Controller;
+using user_service.Repositories;
+using shared_libraries.Repositories;
+using Microsoft.Extensions.Options;
+using System.Net;
+using Microsoft.EntityFrameworkCore.Storage;
 
-var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-builder.Services.AddDbContext<UserDbContext>(options =>
-                options.UseMySql(
-                    builder.Configuration.GetConnectionString("UserService"),
-                    ServerVersion.Parse("8.0.42-mariadb")));
-
-//builder.Services.AddScoped<Interface, Repository>();
-
-builder.Services.AddGrpc();
-
-builder.WebHost.ConfigureKestrel(options =>
+namespace user_service
 {
-    options.ConfigureEndpointDefaults(opt =>
+    public class Program
     {
-        opt.Protocols = HttpProtocols.Http2;
-    });
-});
+        public static void Main(string[] args)
+        {
+        var builder = WebApplication.CreateBuilder(args);
+            var env = builder.Environment.EnvironmentName;
+            var services = builder.Services;
 
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenAnyIP(8080, listenOptions =>
+                {
+                    listenOptions.Protocols = HttpProtocols.Http2;
+                });
+            });
 
-var app = builder.Build();
-app.MapGrpcService<UserService>();
+            services.AddGrpc();
 
-// Configure the HTTP request pipeline.
+            services.AddControllers();
+            services.AddDbContext<UserDbContext>(
+            options =>
+            {
+                if (env == "Testing")
+                {
+                    Console.WriteLine("Running in testing env....");
+                    options.UseMySql(
+                        builder.Configuration.GetConnectionString("DefaultConnection"), ServerVersion.Parse("8.0.42-mariadb")
+                        );
+                }
+                else
+                {
+                    Console.WriteLine("Running in dev env....");
 
-//app.UseHttpsRedirection();
+                    options.UseMySql(
+                        builder.Configuration.GetConnectionString("DefaultConnection"),
+                        ServerVersion.Parse("8.0.42-mariadb"));
+                }
+            });
 
-app.UseAuthorization();
+            services.AddScoped<IGenericRepository, GenericRepository<UserDbContext>>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
-app.MapControllers();
+            var app = builder.Build();
 
-app.Run();
+            app.MapGrpcService<UserService>();
+
+            app.UseRouting();
+            app.UseAuthorization();
+            app.MapControllers();
+            app.Run();
+
+        }
+    }
+}
