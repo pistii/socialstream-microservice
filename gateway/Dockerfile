@@ -15,12 +15,15 @@ WORKDIR /src
 
 COPY gateway/gateway.csproj ./gateway/
 COPY ./services/shared-libraries/shared-libraries.csproj ./services/shared-libraries/
+COPY ./services/notification-service/notification-service.csproj ./services/notification-service/
+
 COPY ./GrpcServices/GrpcServices.csproj ./GrpcServices/
 
 RUN dotnet restore "gateway/gateway.csproj"
 
 COPY ./gateway ./gateway
 COPY ./services/shared-libraries ./services/shared-libraries
+COPY ./services/notification-service ./services/notification-service
 COPY ./GrpcServices ./GrpcServices
 
 WORKDIR /src/gateway
