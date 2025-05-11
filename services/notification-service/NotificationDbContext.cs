@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using shared_libraries.Models;
-using System.Collections.Generic;
 
 namespace notification_service
 {
@@ -16,17 +15,6 @@ namespace notification_service
         }
         public virtual DbSet<Notification> Notification { get; set; }
         public virtual DbSet<UserNotification> UserNotification { get; set; }
-
-        protected override async void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseMySql(
-                "server=notificationDb;user=root;password=jelszo;database=notification-service;port=3306",
-                ServerVersion.Parse("8.0.42"),
-                mySqlOptions => mySqlOptions.EnableRetryOnFailure());
-            }
-        }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -45,12 +33,6 @@ namespace notification_service
                          c => c.ToString(),
                          type => (NotificationType)Enum.Parse(typeof(NotificationType), type));
             });
-
-
-            OnModelCreatingPartial(modelBuilder);
         }
-
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
     }
 }
