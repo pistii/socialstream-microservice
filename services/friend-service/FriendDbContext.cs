@@ -26,7 +26,8 @@ namespace friend_service
             modelBuilder.Entity<Friend>(entity =>
             {
                 entity.HasOne(x => x.friendship_status)
-                    .WithOne(x => x.friendship);
+                    .WithOne(x => x.friendship)
+                    .HasForeignKey<Friend>(f => f.StatusId);
             });
 
         }

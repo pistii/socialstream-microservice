@@ -1,44 +1,69 @@
 using shared_libraries.Interfaces;
 using GrpcServices.Services;
 using Microsoft.EntityFrameworkCore;
-using friend_service;
-using shared_libraries.Controllers;
-using shared_libraries.Kafka;
 using friend_service.Repositories;
-
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-var services = builder.Services;
-
-services.AddControllers();
-services.AddGrpc();
-
-services.AddDbContext<FriendDbContext>(options =>
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("FriendService"),
-        ServerVersion.Parse("8.0.42"),
-        mySqlOptions => mySqlOptions.EnableRetryOnFailure()
-    )
-);
-
-services.AddScoped<IFriendRepository, FriendRepository>();
-
-var app = builder.Build();
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+using shared_libraries.Repositories;
 
 
-// Configure the HTTP request pipeline.
+namespace friend_service
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
 
-//app.MapGrpcService<FriendService>();
+            var builder = WebApplication.CreateBuilder(args);
+            var env = builder.Environment.EnvironmentName;
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                options.ListenAnyIP(8080, listenOptions =>
+                {
+                    listenOptions.Protocols = HttpProtocols.Http2;
+                });
+            });
 
+            var services = builder.Services;
 
-//builder.WebHost.UseUrls("http://*:8080");
+            services.AddControllers();
+            services.AddGrpc();
 
-//app.UseHttpsRedirection();
-app.UseRouting();
+            services.AddDbContext<FriendDbContext>(
+            options =>
+            {
+                if (env != "Testing")
+                {
+                    Console.WriteLine("running friend db in dev env...");
+                    options.UseMySql(
+                        builder.Configuration.GetConnectionString("DefaultConnection"),
+                        ServerVersion.Parse("8.0.42")
+                    );
+                }
+                else
+                {
+                    Console.WriteLine("running friend db in testing env...");
+                    options.UseMySql(
+                       builder.Configuration.GetConnectionString("DefaultConnection"),
+                       ServerVersion.Parse("8.0.42")
+                   );
+                }
+            }
+            );
+            
 
-app.UseAuthorization();
+            services.AddScoped<IGenericRepository, GenericRepository<FriendDbContext>>();
+            services.AddScoped<IFriendRepository, FriendRepository>();
 
-app.MapControllers();
+            var app = builder.Build();
 
-app.Run();
+            app.MapGrpcService<FriendService>();
+
+            app.UseRouting();
+            app.UseAuthorization();
+            app.MapControllers();
+
+            app.Run();
+
+        }
+    }
+}
