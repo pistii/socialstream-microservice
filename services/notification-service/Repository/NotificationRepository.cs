@@ -20,10 +20,24 @@ namespace notification_service.Repository
         }
 
 
+        public async Task<List<Notification>> GetAllNotificationTest()
+        {
+            var items = await _context.Notification.ToListAsync();
+            Console.WriteLine($"Értesítések az értesítés adatbázisban: ({items.Count})");
+            return items;
+        }
+
+
+        public async Task<List<UserNotification>> GetAllUserNotificationTest()
+        {
+            return await _context.UserNotification.ToListAsync();
+        }
+
+
         public async Task<GetNotification> SendNotification(int receiverUserId, Personal author, CreateNotification createNotification)
         {
             var notification = new Notification(createNotification.AuthorId, "", createNotification.NotificationType,
-                author.User!.PublicId,
+                author.User!.publicId,
                 author.avatar ?? "",
                 createNotification.UserId);
             await InsertSaveAsync(notification);
@@ -47,7 +61,7 @@ namespace notification_service.Repository
                 .Include(n => n.notification)
                 .Where(n => n.UserId == userId)
                 .Select(n => new GetNotification(
-                        n.notification!.PublicId,
+                        n.notification!.publicId,
                         n.notification.AuthorPublicId,
                         string.Empty,
                         n.notification.CreatedAt,

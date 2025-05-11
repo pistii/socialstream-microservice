@@ -14,11 +14,12 @@ WORKDIR /src
 
 COPY services/chat-service/chat-service.csproj ./chat-service/
 COPY services/shared-libraries/shared-libraries.csproj ./shared-libraries/
-COPY GrpcServices/GrpcServices.csproj ./GrpcServices/
+COPY ../GrpcServices/GrpcServices.csproj ./GrpcServices/
 
 RUN dotnet restore "chat-service/chat-service.csproj"
 
 COPY ../services ./services
+COPY ./GrpcServices ./GrpcServices
 
 WORKDIR /src/services/chat-service
 

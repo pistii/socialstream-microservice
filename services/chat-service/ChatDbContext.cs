@@ -14,37 +14,16 @@ namespace chat_service
         {
         }
 
+        public virtual DbSet<PersonalChatRoom> PersonalChatRoom { get; set; }
         public virtual DbSet<ChatRoom> ChatRoom { get; set; }
         public virtual DbSet<ChatContent> ChatContent { get; set; }
         public virtual DbSet<ChatFile> ChatFile { get; set; }
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            //if (!optionsBuilder.IsConfigured)
-            //{
-            //    var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
-
-            //    if (string.IsNullOrEmpty(connectionString))
-            //    {
-            //        throw new InvalidOperationException("DB_CONNECTION_STRING is not set.");
-            //    }
-
-            //    optionsBuilder.UseMySql(connectionString, ServerVersion.Parse("10.4.20-mariadb"));
-            //}
-
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseMySql(
-                "server=chatDb;user=root;password=jelszo;database=chat-service;port=3306",
-                ServerVersion.Parse("8.0.42"),
-                mySqlOptions => mySqlOptions.EnableRetryOnFailure());
-            }
-        }
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<PersonalChatRoom>()
+                .HasKey(x => new { x.FK_PersonalId, x.FK_ChatRoomId });
 
             modelBuilder.Entity<ChatRoom>(entity =>
             {

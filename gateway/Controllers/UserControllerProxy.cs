@@ -1,4 +1,4 @@
-﻿using GrpcServices.Handlers;
+﻿using GrpcServices.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace gateway.Controllers
@@ -8,15 +8,16 @@ namespace gateway.Controllers
     [ApiController]
     public class UserControllerProxy : BaseController
     {
-        public UserControllerProxy()
+        private readonly IUserGrpcClient _userGrpcClient;
+        public UserControllerProxy(IUserGrpcClient userGrpcClient)
         {
-            ClientConnectionHandler.Initialize("http://user-service:8080");
+            _userGrpcClient = userGrpcClient;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetUser()
         {
-            var response = await ClientConnectionHandler.UserClient.GetUserAsync(new GrpcServices.UserRequest() { PublicId = "a1" });
+            var response = await _userGrpcClient.GetUserAsync(new GrpcServices.UserRequest() { PublicId = "a1" });
             return Ok(response);
         }
     }

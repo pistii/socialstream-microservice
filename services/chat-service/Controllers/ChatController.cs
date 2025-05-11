@@ -1,4 +1,4 @@
-using chat_service.Helpers;
+﻿using chat_service.Helpers;
 using shared_libraries.DTOs;
 using shared_libraries.Interfaces;
 using shared_libraries.Models;
@@ -6,13 +6,14 @@ using chat_service.Repository;
 using chat_service.Storage;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using shared_libraries.Controllers;
 
 namespace chat_service.Controllers
 {
     //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class ChatController : BaseController
+    public class ChatController : BaseController, IChatController
     {
         private readonly IChatRepository _chatRepository;
         private readonly IStorageRepository _storageRepository;
@@ -36,48 +37,41 @@ namespace chat_service.Controllers
             return BadRequest();
         }
 
-        [HttpGet("conversation/{receiverPrivateId}")]
-        public async Task<IActionResult> GetConversationByUserId(int receiverPrivateId, string receivePublicId)
-        {
-            //var senderId = GetUserId();
-            return Ok();
-            //var room = await _chatRepository.GetChatRoomByUser(senderId, receiverPrivateId);
 
-            //if (room == null) return NoContent();
+        //[HttpGet("conversation/{receiverPrivateId}")]
+        //public async Task<IActionResult> GetConversationByUserId(int receiverPrivateId, string receivePublicId)
+        //{
 
-            ////Map the original chatContent object to ChatContentDto. This way the ChatFile will contain the audio object.
-            //var sortedChatContents = _chatRepository
-            //    .GetSortedChatContent(room.chatRoomId)
-            //    .Select(c => new ChatContentDto(senderUser.PublicId, c.AuthorId == senderId, c))
-            //    .ToList();
+        //    var senderId = GetUserId();
+        //    var room = await _chatRepository.GetChatRoomByUser(senderId, receiverPrivateId);
+
+        //    if (room == null) return NoContent();
+
+        //    //Map the original chatContent object to ChatContentDto. This way the ChatFile will contain the audio object.
+        //    var sortedChatContents = _chatRepository
+        //        .GetSortedChatContent(room.chatRoomId)
+        //        .Select(c => new ChatContentDto(senderUser.PublicId, c.AuthorId == senderId, c))
+        //        .ToList();
 
 
-            //var totalMessages = sortedChatContents.Count;
-            //var totalPages = (int)Math.Ceiling((double)totalMessages / 20);
+        //    var totalMessages = sortedChatContents.Count;
+        //    var totalPages = (int)Math.Ceiling((double)totalMessages / 20);
 
-            //var returnValue = _chatRepository.Paginator(sortedChatContents);
-            //returnValue.Reverse();
+        //    var returnValue = _chatRepository.Paginator(sortedChatContents);
+        //    returnValue.Reverse();
 
-            ////Check if any of the chatContent has a file
-            //bool hasFile = sortedChatContents.Any(x => x.ChatFile != null);
-            //if (hasFile)
-            //{
-            //    //TODO: Should return file
-            //    //returnValue = await _chatRepository.GetChatFile(returnValue);
-            //}
-            //List<string> participants = new() { senderUser.PublicId, receivePublicId };
-            //return Ok(new ContentDto<ChatContentDto>(returnValue, participants, totalPages, 1, room.chatRoomId));
-        }
+        //    //Check if any of the chatContent has a file
+        //    bool hasFile = sortedChatContents.Any(x => x.ChatFile != null);
+        //    if (hasFile)
+        //    {
+        //        //TODO: Should return file
+        //        //returnValue = await _chatRepository.GetChatFile(returnValue);
+        //    }
+        //    List<string> participants = new() { senderUser.PublicId, receivePublicId };
+        //    return Ok(new ContentDto<ChatContentDto>(returnValue, participants, totalPages, 1, room.chatRoomId));
+        //}
 
-        [HttpGet("rooms")]
-        public async Task<IActionResult> GetAllChatRoom()
-        {
-            var userId = GetUserId();
-
-            var query = await _chatRepository.GetAllChatRoomAsQuery("HARDCODED PUBLIC USER ID", 123);
-
-            return Ok(query);
-        }
+        
 
         [HttpGet("{roomid}/{currentPage}")]
         [HttpGet("{roomid}")]
@@ -94,7 +88,7 @@ namespace chat_service.Controllers
             var senderUser = await _chatRepository.GetByIdAsync<User>(room.senderId);
             if (senderUser == null) return BadRequest();
             //Map the original chatContent object to ChatContentDto. This way the ChatFile will contain the audio object.
-            var content = _chatRepository.GetSortedChatContent(roomid).Select(c => new ChatContentDto(senderUser.PublicId, c.AuthorId == currentUserId, c)).Reverse().ToList();
+            var content = _chatRepository.GetSortedChatContent(roomid).Select(c => new ChatContentDto(senderUser.publicId, c.AuthorId == currentUserId, c)).Reverse().ToList();
 
             var totalMessages = content.Count;
             var totalPages = (int)Math.Ceiling((double)totalMessages / messagesPerPage);
@@ -131,7 +125,7 @@ namespace chat_service.Controllers
                 }
             }
 
-            List<string> participants = new() { senderUser.PublicId, "HARDCODED PUBLIC ID" };
+            List<string> participants = new() { senderUser.publicId, "HARDCODED PUBLIC ID" };
             return Ok(new ChatRoomWithContentDto<ChatContentDto>(returnValue, participants, totalPages, currentPage, roomid));
         }
 
@@ -148,7 +142,7 @@ namespace chat_service.Controllers
             return await Send(chatDto);
         }
 
-        private async Task<IActionResult> Send(ChatDto chatDto)
+        public async Task<IActionResult> Send(ChatDto chatDto)
         {
             //var senderId =(int)GetUserId();
             var senderId = 1;
@@ -162,6 +156,7 @@ namespace chat_service.Controllers
             {
                 message = chatDto.message,
                 status = chatDto.status,
+                //ReceiverPublicId = chatDto.receiverPublicId,
                 AuthorId = senderId,
                 chatContentId = room.chatRoomId,
             };
@@ -198,19 +193,18 @@ namespace chat_service.Controllers
 
                 return BadRequest("File size exceeded or format not accepted.");
             }
-            //var dto = new ChatContentDto(sender.PublicId, chatContent.AuthorId == senderId, chatContent);
-            //var dtoToReceiver = new ChatContentDto(sender.PublicId, false, chatContent);
-            return Ok(senderId);
+            
+            return Ok(chatContent);
         }
 
         [HttpPut("/update")]
         public async Task<IActionResult> UpdateMessage(int messageId, int updateToUser, string msg)
         {
 
-            var user = await _chatRepository.GetByIdAsync<User>(updateToUser);
+            //var user = await _chatRepository.GetByIdAsync<User>(updateToUser);
             var message = await _chatRepository.GetByIdAsync<ChatContent>(messageId);
 
-            if (message == null || user == null)
+            if (message == null)
             {
                 return BadRequest("Unable to find message or user, maybe it's deleted?");
             }

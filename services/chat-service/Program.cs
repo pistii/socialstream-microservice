@@ -1,7 +1,10 @@
 using chat_service;
+using chat_service.Controllers;
 using chat_service.Repository;
 using chat_service.Storage;
+using GrpcServices.Services;
 using Microsoft.EntityFrameworkCore;
+using shared_libraries.Controllers;
 using shared_libraries.Interfaces;
 using shared_libraries.Repositories;
 
@@ -10,13 +13,17 @@ var services = builder.Services;
 
 // Add services to the container.
 
+services.AddGrpc();
 services.AddControllers();
 services.AddDbContext<ChatDbContext>(options =>
                 options.UseMySql(
                     builder.Configuration.GetConnectionString("ChatService"),
-                    ServerVersion.Parse("10.4.20-mariadb"))); //10.4.6-mariadb
+                    ServerVersion.Parse("8.0.42-mariadb"))); //10.4.6-mariadb
+
 
 services.AddScoped<IGenericRepository, GenericRepository<ChatDbContext>>();
+
+services.AddScoped<IChatController, ChatController>();
 
 services.AddScoped<IStorageRepository, StorageRepository>();
 services.AddScoped<IChatRepository, ChatRepository>();
@@ -27,10 +34,10 @@ services.AddAuthorization();
 services.AddAuthentication();
 
 var app = builder.Build();
+app.MapGet("/", () => Console.WriteLine("Request received in chat service"));
 
-// Configure the HTTP request pipeline.
+app.MapGrpcService<ChatService>();
 
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 app.UseAuthentication();

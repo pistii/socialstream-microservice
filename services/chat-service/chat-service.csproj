@@ -11,6 +11,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Confluent.Kafka" Version="2.10.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.30.2" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.70.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.71.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    
     <PackageReference Include="Google.Cloud.Storage.V1" Version="4.11.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.13" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
@@ -21,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\GrpcServices\GrpcServices.csproj" />
     <ProjectReference Include="..\shared-libraries\shared-libraries.csproj" />
   </ItemGroup>
 
@@ -29,4 +38,9 @@
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
   </ItemGroup>
+
+
+  <PropertyGroup>
+    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+  </PropertyGroup>
 </Project>

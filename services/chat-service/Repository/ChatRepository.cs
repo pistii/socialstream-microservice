@@ -1,25 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using chat_service.Storage;
 using shared_libraries.DTOs;
 using shared_libraries.Models;
 using shared_libraries.Interfaces;
+using shared_libraries.Repositories;
 
 namespace chat_service.Repository
 {
-    public class ChatRepository : GenericRepository, IChatRepository
+    public class ChatRepository : GenericRepository<ChatDbContext>, IChatRepository
     {
         private readonly ChatDbContext _context;
-        private readonly IStorageRepository _storageRepository;
-        private readonly IChatStorage _chatStorage;
+        
 
-        public ChatRepository(ChatDbContext context,
-        IStorageRepository storageRepository,
-        IChatStorage chatStorage
+        public ChatRepository(ChatDbContext context
         ) : base(context)
         {
             _context = context;
-            _storageRepository = storageRepository;
-            _chatStorage = chatStorage;
         }
 
         public async Task<List<ChatRoomDto>> GetAllChatRoomAsQuery(string authorId, int userId)
@@ -44,7 +39,7 @@ namespace chat_service.Repository
 
             var rooms = query.Select(cr => new ChatRoomDto
             {
-                chatRoomId = cr.PublicId,
+                chatRoomId = cr.publicId,
                 endedDateTime = cr.endedDateTime,
                 receiverId = cr.ReceiverPublicId,
                 senderId = authorId,

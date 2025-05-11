@@ -20,7 +20,7 @@ namespace friend_service.Controllers
         [HttpGet("kafka-test")]
         public async Task<IActionResult> GetAll()//string publicId, int currentPage = 1, int qty = 9)
         {
-            var producer = new KafkaProducerService<Friend>("kafka:9092", "getall-friend-topic");
+            var producer = new KafkaProducerService<Friend>("getall-friend-topic");
             await producer.ProduceAsync(new Friend { UserId = 1 });
 
             return Ok();
@@ -31,9 +31,6 @@ namespace friend_service.Controllers
             //var sorted = friends?.Skip((currentPage - 1) * qty).Take(qty);
 
             //return Ok(sorted);
-        }
-        {
-            return Ok(_friendDbContext.Friendship.FirstOrDefault());
         }
     }
 }
