@@ -7,8 +7,12 @@ var services = builder.Services;
 
 builder.Services.AddControllers();
 builder.Services.AddGrpc();
+            services.AddSignalR(options =>
+            {
+                options.MaximumReceiveMessageSize = 102400000;
+                options.EnableDetailedErrors = true;
 
-var app = builder.Build();
+            });
 
 
 // Configure the HTTP request pipeline.
@@ -21,5 +25,6 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
-
+            app.MapHub<NotificationHub>("/Notification");
+            app.MapHub<ChatHub>("/Chat");
 app.Run();

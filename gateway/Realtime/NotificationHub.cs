@@ -5,16 +5,15 @@ using shared_libraries.Models;
 
 namespace gateway.Realtime
 {
-    public class NotificationHub<TDBContext> : ConnectionHandler<INotificationClient>
+    public class NotificationHub : ConnectionHandler<INotificationClient>
     {
         private readonly ConnectionHandler<INotificationClient> _connectionHandler;
         private readonly IMapConnections _connections;
-        private readonly IHubContext<NotificationHub<TDBContext>, INotificationClient> _hubContext;
+        private readonly IHubContext<NotificationHub, INotificationClient> _hubContext;
 
         public NotificationHub(IJwtUtils utils,
             IMapConnections mapConnections,
-            TDBContext context,
-            IHubContext<NotificationHub<TDBContext>,
+            IHubContext<NotificationHub,
             INotificationClient> hubContext)
         : base(utils, mapConnections) // Öröklés a szülőosztályból, meg kell hívni a konstruktorát
         {
