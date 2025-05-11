@@ -1,4 +1,3 @@
-using shared_libraries.Interfaces;
 using GrpcServices.Services;
 using GrpcServices.Clients;
 using GrpcServices.Interfaces;
@@ -14,9 +13,17 @@ namespace gateway
     {
         public static void Main(string[] args)
         {
-var builder = WebApplication.CreateBuilder(args);
-var services = builder.Services;
+            var builder = WebApplication.CreateBuilder(args);
+            var services = builder.Services;
             var configuration = builder.Configuration;
+
+            //Logger config
+            Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Debug()
+            .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+
+
             services.AddScoped<IUserGrpcClient, UserGrpcClient>();
             services.AddScoped<IFriendGrpcClient, FriendGrpcClient>();
             services.AddScoped<INotificationGrpcClient, NotificationGrpcClient>();
@@ -46,16 +53,16 @@ var services = builder.Services;
 
             var app = builder.Build();
 
-app.MapGrpcService<NotificationService>();
-app.MapGrpcService<UserService>();
-app.MapGrpcService<FriendService>();
+            app.MapGrpcService<NotificationService>();
+            app.MapGrpcService<UserService>();
+            app.MapGrpcService<FriendService>();
 
-app.UseRouting();
-app.UseAuthorization();
-app.MapControllers();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.MapControllers();
             app.MapHub<NotificationHub>("/Notification");
             app.MapHub<ChatHub>("/Chat");
-app.Run();
+            app.Run();
         }
     }
 }
