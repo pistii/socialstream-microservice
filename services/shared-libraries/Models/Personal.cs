@@ -30,31 +30,32 @@ namespace shared_libraries.Models
         public string lastName { get; set; } = null!;
         public bool isMale { get; set; }
         [StringLength(70)]
-        public string? PlaceOfResidence { get; set; }
+        [Column("PlaceOfResidence")]
+        public string? placeOfResidence { get; set; }
         [StringLength(150)]
         public string? avatar { get; set; } = string.Empty;
 
         [StringLength(15)]
         public string? phoneNumber { get; set; } = string.Empty;
-
-        public DateOnly? DateOfBirth { get; set; }
+        [Column("DateOfBirth")]
+        public DateOnly? dateOfBirth { get; set; }
 
         [StringLength(100)]
-        public string? PlaceOfBirth { get; set; }
+        [Column("placeOfBirth")]
+        public string? placeOfBirth { get; set; }
 
         [StringLength(60)]
-        public string? Profession { get; set; } = string.Empty;
+        [Column("Profession")]
+        public string? profession { get; set; } = string.Empty;
 
         [StringLength(120)]
-        public string? Workplace { get; set; } = string.Empty;
+        [Column("Workplace")]
+        public string? workplace { get; set; } = string.Empty;
 
         [ForeignKey("activeStudy")]
         public int? publicStudyId { get; set; }
         public virtual Study? activeStudy { get; set; }
 
-        [JsonIgnore]
-        public virtual Friend? friends { get; set; }
-        
         [JsonIgnore]
         public virtual User? User { get; set; }
 

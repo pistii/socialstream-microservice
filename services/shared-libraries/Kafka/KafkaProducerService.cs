@@ -8,9 +8,9 @@ namespace shared_libraries.Kafka
         private readonly IProducer<Null, string> _producer;
         private readonly string _topic;
 
-        public KafkaProducerService(string bootstrapServers, string topic)
+        public KafkaProducerService(string topic)
         {
-            var config = new ProducerConfig { BootstrapServers = bootstrapServers };
+            var config = new ProducerConfig { BootstrapServers = "kafka:9092" };
             _producer = new ProducerBuilder<Null, string>(config).Build();
             _topic = topic;
         }

@@ -13,7 +13,7 @@ namespace shared_libraries.DTOs
         }
         public ChatContentDto(string authorId, bool isAuthor, ChatContent chatContent)
         {
-            PublicId = chatContent.PublicId;
+            PublicId = chatContent.publicId;
             AuthorId = authorId;
             Message = chatContent.message;
             chatRoomId = chatContent.chatContentId;
@@ -24,6 +24,7 @@ namespace shared_libraries.DTOs
 
         public string PublicId { get; set; } = null!;
         public string AuthorId { get; set; } = null!;
+        public string ReceiverId { get; set; } = null!;
         public string? Message { get; set; }
         [Newtonsoft.Json.JsonIgnore]
         public int chatRoomId { get; set; }

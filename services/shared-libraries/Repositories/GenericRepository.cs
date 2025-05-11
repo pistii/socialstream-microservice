@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using shared_libraries.Interfaces;
+using shared_libraries.Interfaces.Shared;
+using System.Linq.Expressions;
 
 namespace shared_libraries.Repositories
 {
@@ -75,6 +77,41 @@ namespace shared_libraries.Repositories
         {
             var exists = await _context.Set<T1>().FindAsync(entity);
             return exists != null;
+        }
+
+        public async Task<T?> GetByPublicIdAsync<T>(string publicId) where T : class, IHasPublicId
+        {
+            return await _context.Set<T>().FirstOrDefaultAsync(e => e.publicId == publicId);
+        }
+
+
+        public async Task<List<T1>> GetWithIncludeAsync<T1, TProperty>(
+            Expression<Func<T1, TProperty>> includeExpression) where T1 : class
+        {
+            return await _context.Set<T1>()
+                .Include(includeExpression)
+                .ToListAsync();
+        }
+
+
+        public async Task<T> GetWithIncludeAsync<T, TProperty>(
+            Expression<Func<T, TProperty>> includeExpression,
+            Expression<Func<T, bool>> predicate
+        ) where T : class
+        {
+            return await _context.Set<T>()
+                .Include(includeExpression)
+                .FirstOrDefaultAsync(predicate);
+        }
+
+
+
+        public async Task<T> GetEntityByPredicateFirstOrDefaultAsync<T>(
+            Expression<Func<T, bool>> predicate
+        ) where T : class
+        {
+            return await _context.Set<T>()
+                .FirstOrDefaultAsync(predicate);
         }
     }
 }

@@ -12,8 +12,8 @@ namespace shared_libraries.DTOs
         public PostDto(Personal author, string postedToUser, Post post, int? commentsQty = 0)
         {
             Post = post;
-            PostAuthor = new PostAuthor(author.avatar!, author.firstName, author.middleName!, author.lastName, author.User!.PublicId);
-            IsAuthor = author.User!.PublicId == postedToUser;
+            PostAuthor = new PostAuthor(author.avatar!, author.firstName, author.middleName!, author.lastName, author.User!.publicId);
+            IsAuthor = author.User!.publicId == postedToUser;
             PostedToUserId = postedToUser;
             CommentsQty = commentsQty;
         }

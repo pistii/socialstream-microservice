@@ -10,7 +10,7 @@ namespace shared_libraries.Models
     {
         public ChatRoom()
         {
-            PublicId = Guid.NewGuid().ToString("N");
+            publicId = Guid.NewGuid().ToString("N");
             endedDateTime = DateTime.Now;
         }
         
@@ -18,7 +18,7 @@ namespace shared_libraries.Models
         [Column(TypeName = "int(11)")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int chatRoomId { get; set; }
-        public string PublicId { get; set; }
+        public string publicId { get; set; }
         public string ReceiverPublicId { get; set; } = null!;
         public int senderId { get; set; }
         public int receiverId { get; set; }

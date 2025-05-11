@@ -16,7 +16,7 @@ namespace shared_libraries.Models
             this.email = user.email;
             this.personal = user.personal;
             this.SecondaryEmailAddress = user.SecondaryEmailAddress;
-            this.userID = user.userID;
+            this.userId = user.userId;
             this.isOnlineEnabled = user.isOnlineEnabled;
             this.LastOnline = user.LastOnline;
         }
@@ -24,9 +24,9 @@ namespace shared_libraries.Models
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column(TypeName = "int(11)")]
+        [Column(name:"UserID", TypeName = "int(11)")]
         [JsonIgnore]
-        public int userID { get; set; }
+        public int userId { get; set; }
 
         [StringLength(100)]
         [Required]
@@ -41,7 +41,8 @@ namespace shared_libraries.Models
         public string password { get; set; } = string.Empty;
         public DateTime? registrationDate { get; set; } = DateTime.Now;
         public virtual bool isActivated { get; set; } = false;
-        public string PublicId { get; set; } = string.Empty;
+        [Column("PublicId")]
+        public string publicId { get; set; } = string.Empty;
         public DateTime LastOnline { get; set; }
         public bool isOnlineEnabled { get; set; } = true;
         public virtual ICollection<UserRestriction>? UserRestriction { get; }

@@ -79,7 +79,7 @@ namespace shared_libraries.Auth
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("userId", user.userID.ToString())
+                Subject = new ClaimsIdentity(new[] { new Claim("userId", user.userId.ToString())
                 }),
                 Expires = DateTime.Now.AddDays(15),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

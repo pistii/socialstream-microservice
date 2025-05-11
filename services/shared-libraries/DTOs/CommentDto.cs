@@ -8,14 +8,14 @@ namespace shared_libraries.DTOs
         public CommentDto() { }
         public CommentDto(Comment comment)
         {
-            this.Comment = new(false, comment.PublicId, comment.CommentDate, comment.CommentText ?? "", comment.LastModified);
+            this.Comment = new(false, comment.publicId, comment.CommentDate, comment.CommentText ?? "", comment.LastModified);
         }
 
         public CommentDto(Comment comment, Personal author)
         {
             this.Comment = new(
                 true,//comment.AuthorPerson!.User!.PublicId == author.User!.PublicId,
-                comment.PublicId,
+                comment.publicId,
                 comment.CommentDate,
                 comment.CommentText ?? "",
                 comment.LastModified,
@@ -27,7 +27,7 @@ namespace shared_libraries.DTOs
                 author.firstName, 
                 author.middleName ?? "", 
                 author.lastName,
-                author.User.PublicId);
+                author.User!.publicId);
         }
 
         public GetComment? Comment { get; set; }

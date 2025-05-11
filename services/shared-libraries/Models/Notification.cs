@@ -12,7 +12,7 @@ namespace shared_libraries.Models
         public Notification()
         {
             this.ExpirationDate = NotificationExpirationCalculator.CalculateExpiration(this.NotificationType);
-            this.PublicId = Guid.NewGuid().ToString("N");
+            this.publicId = Guid.NewGuid().ToString("N");
 
         }
         public Notification(int authorId, string message, NotificationType type, string authorPublicId, string authorAvatar, int receiverUserId)
@@ -21,7 +21,7 @@ namespace shared_libraries.Models
             this.Message = message;
             this.NotificationType = type;
             this.ExpirationDate = NotificationExpirationCalculator.CalculateExpiration(type);
-            this.PublicId = Guid.NewGuid().ToString("N");
+            this.publicId = Guid.NewGuid().ToString("N");
             this.AuthorPublicId = authorPublicId;
             this.AuthorAvatar = authorAvatar;
 
@@ -29,9 +29,9 @@ namespace shared_libraries.Models
         }
 
         public int Id { get; set; }
-        public string PublicId { get; set; }
+        public string publicId { get; set; }
         public int AuthorId { get; set; }
-        [ForeignKey(nameof(User.PublicId))]
+        [ForeignKey(nameof(User.publicId))]
         public string AuthorPublicId { get; set; } = null!;
         [StringLength(100)]
         public string AuthorAvatar { get; set; } = string.Empty;
@@ -104,7 +104,7 @@ namespace shared_libraries.Models
 
         public GetNotification(Notification notification)
         {
-            this.NotificationId = notification.PublicId;
+            this.NotificationId = notification.publicId;
             this.AuthorId = notification.AuthorPublicId;
             this.Avatar = notification.AuthorAvatar;
             this.Message = notification.Message;
@@ -113,8 +113,8 @@ namespace shared_libraries.Models
 
         public GetNotification(Notification notification, Personal author)
         {
-            this.NotificationId = notification.PublicId;
-            this.AuthorId = author.User!.PublicId;
+            this.NotificationId = notification.publicId;
+            this.AuthorId = author.User!.publicId;
             this.Avatar = author.avatar;
             this.Message = notification.Message;
             this.NotificationType = notification.NotificationType;

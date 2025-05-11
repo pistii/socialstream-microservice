@@ -2,6 +2,6 @@
 {
     public interface IHasPublicId
     {
-        public string PublicId { get; set; }
+        public string publicId { get; set; }
     }
 }

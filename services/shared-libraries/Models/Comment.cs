@@ -18,7 +18,7 @@ namespace shared_libraries.Models
         [JsonIgnore]
         public int FK_AuthorId { get; set; }
         [StringLength(36)]
-        public required string PublicId { get; set; }
+        public required string publicId { get; set; }
         public DateTime CommentDate { get; set; }
         [StringLength(500)]
         public string? CommentText { get; set; }

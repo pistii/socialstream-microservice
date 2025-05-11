@@ -23,15 +23,15 @@ namespace shared_libraries.DTOs
             middleName = personal.middleName;
             lastName = personal.lastName;
             isMale = personal.isMale;
-            PlaceOfResidence = personal.PlaceOfResidence;
+            placeOfResidence = personal.placeOfResidence;
             avatar = personal.avatar;
-            DateOfBirth = personal.DateOfBirth;
-            Profession = personal.Profession;
-            Workplace = personal.Workplace;
-            PublicId = personal.User!.PublicId;
+            dateOfBirth = personal.dateOfBirth;
+            profession = personal.profession;
+            workplace = personal.workplace;
+            publicId = personal.User!.publicId;
         }
         public int Score { get; set; }
-        public string PublicId { get; set; }
+        public string publicId { get; set; }
     }
 
     public class RecommendedPosts : PostDto, IScoreRatio

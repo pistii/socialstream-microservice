@@ -12,13 +12,13 @@ namespace shared_libraries.Models
         public ChatContent()
         {
             sentDate = DateTime.Now;
-            PublicId = Guid.NewGuid().ToString("N");
+            publicId = Guid.NewGuid().ToString("N");
         }
 
         [Key]
         [ForeignKey("ChatFile")]
         public int MessageId { get; set; }
-        public string PublicId { get; set; }
+        public string publicId { get; set; }
         public int AuthorId { get; set; }
         public int chatContentId { get; set; }
         [StringLength(800)]

@@ -2,39 +2,58 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using shared_libraries.Kafka.IServiceClient;
+using shared_libraries.Models;
+using System.Text.Json;
 
 namespace shared_libraries.Kafka
 {
-    public class KafkaConsumerService : BackgroundService
+    public class KafkaConsumerService<T> : BackgroundService
     {
-        private readonly ILogger<KafkaConsumerService> _logger;
+        private readonly ILogger<KafkaConsumerService<T>> _logger;
         private readonly IConsumer<Ignore, string> _consumer;
-
-        public KafkaConsumerService(ILogger<KafkaConsumerService> logger, IConfiguration config)
+        private readonly IKafkaConsumerHandler<T> _handler;
+        private string _topic;
+        public KafkaConsumerService(
+            ILogger<KafkaConsumerService<T>> logger, 
+            IConfiguration config, 
+            IKafkaConsumerHandler<T> kafkaConsumerHandler, 
+            string topic)
         {
             _logger = logger;
+            _handler = kafkaConsumerHandler;
+            _topic = topic;
 
             var consumerConfig = new ConsumerConfig
             {
                 BootstrapServers = config["Kafka:BootstrapServers"],
-                GroupId = "friend-consumer-group",
+                GroupId = $"consumer-group-{typeof(T).Name.ToLower()}",
                 AutoOffsetReset = AutoOffsetReset.Earliest
             };
 
             _consumer = new ConsumerBuilder<Ignore, string>(consumerConfig).Build();
-            _consumer.Subscribe("getall-friend-topic");
+            _consumer.Subscribe(_topic);
         }
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    var result = _consumer.Consume(stoppingToken);
-                    _logger.LogInformation($"Message received: {result.Message.Value}");
-                    Console.WriteLine("request received! ");
-                    // Ide jön a feldolgozás logika
+                    try
+                    {
+                        var result = _consumer.Consume(stoppingToken);
+                        var message = JsonSerializer.Deserialize<T>(result.Message.Value);
+                        if (message != null)
+                        {
+                            await _handler.HandleAsync(message, stoppingToken);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, $"Error processing message on topic '{_topic}'");
+                    }
                 }
             }, stoppingToken);
         }
@@ -47,40 +66,5 @@ namespace shared_libraries.Kafka
         }
     }
 
-    //public class KafkaConsumerService<T>
-    //{
-    //    private readonly string _topic;
-    //    private readonly IConsumer<Null, string> _consumer;
-
-    //    public KafkaConsumerService(string bootstrapServers, string topic, string groupId)
-    //    {
-    //        var config = new ConsumerConfig
-    //        {
-    //            BootstrapServers = bootstrapServers,
-    //            GroupId = groupId,
-    //            AutoOffsetReset = AutoOffsetReset.Earliest
-    //        };
-
-    //        _consumer = new ConsumerBuilder<Null, string>(config).Build();
-    //        _topic = topic;
-    //    }
-
-    //    public void StartConsuming(Func<T, Task> onMessageReceived)
-    //    {
-    //        _consumer.Subscribe(_topic);
-
-    //        Task.Run(() =>
-    //        {
-    //            while (true)
-    //            {
-    //                var result = _consumer.Consume();
-    //                var message = JsonSerializer.Deserialize<T>(result.Message.Value);
-    //                onMessageReceived(message).Wait(); // Exception handling, retry később
-    //                Console.WriteLine("message received");
-    //                Console.WriteLine(message);
-    //            }
-    //        });
-    //    }
-    //}
 
 }

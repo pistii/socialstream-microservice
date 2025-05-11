@@ -32,12 +32,12 @@ namespace shared_libraries.Services
     {
         public PublicUserInfo(Personal personal)
         {
-            this.UserId = personal.User!.PublicId;
+            this.UserId = personal.User!.publicId;
             this.FirstName = personal.firstName;
             this.MiddleName = personal.middleName;
             this.LastName = personal.lastName;
-            this.BirthOfPlace = personal.PlaceOfBirth;
-            this.PlaceOfResidence = personal.PlaceOfResidence;
+            this.BirthOfPlace = personal.placeOfBirth;
+            this.PlaceOfResidence = personal.placeOfResidence;
         }
         public string UserId { get; set; }
         public string FirstName { get; set; }

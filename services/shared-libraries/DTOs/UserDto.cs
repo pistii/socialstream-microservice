@@ -11,7 +11,7 @@ namespace shared_libraries.DTOs
             this.email = user.email;
             this.personal = user.personal;
             this.SecondaryEmailAddress = user.SecondaryEmailAddress;
-            this.userID = user.userID;
+            this.userId = user.userId;
             this.isOnlineEnabled = user.isOnlineEnabled;
             this.LastOnline = user.LastOnline;
             this.PostCreateEnabledToId = user.personal!.Settings!.PostCreateEnabledToId;
@@ -21,7 +21,7 @@ namespace shared_libraries.DTOs
         {
             this.email = email;
             this.SecondaryEmailAddress = SecondaryEmail;
-            this.userID = userId;
+            this.userId = userId;
             this.isOnlineEnabled = isOnlineEnabled;
             this.LastOnline = lastOnline;
             this.Studies = studies;
@@ -31,7 +31,7 @@ namespace shared_libraries.DTOs
         {
             this.email = email;
             this.SecondaryEmailAddress = SecondaryEmail;
-            this.userID = userId;
+            this.userId = userId;
             this.isOnlineEnabled = isOnlineEnabled;
             this.LastOnline = lastOnline;
             this.StudiesDto = studies;

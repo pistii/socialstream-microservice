@@ -13,7 +13,7 @@ namespace shared_libraries.DTOs
        
         public UserDetailsDto(Personal personal)
         {
-            PublicId = personal.User!.PublicId;
+            PublicId = personal.User!.publicId;
             Avatar = personal.avatar;
             FirstName = personal.firstName;
             MiddleName = personal.middleName;
@@ -36,7 +36,7 @@ namespace shared_libraries.DTOs
 
          public UserDetailsPermitDto(Personal personal)
         {
-            this.PublicId = personal.User!.PublicId;
+            this.PublicId = personal.User!.publicId;
             this.Avatar = personal.avatar;
             this.FirstName = personal.firstName;
             this.MiddleName = personal.middleName;
