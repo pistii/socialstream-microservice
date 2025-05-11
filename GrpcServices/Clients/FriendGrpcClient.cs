@@ -1,4 +1,5 @@
-﻿using Grpc.Net.Client;
+﻿using Grpc.Core;
+using Grpc.Net.Client;
 using GrpcServices.Interfaces;
 using GrpcServices.Protos;
 
@@ -8,9 +9,9 @@ namespace GrpcServices.Clients
     {
         private readonly Friend.FriendClient _client;
 
-        public FriendGrpcClient(GrpcChannel channel)
+        public FriendGrpcClient(Friend.FriendClient client)
         {
-            _client = new Friend.FriendClient(channel);
+            _client = client;
         }
 
         public async Task<GetFriendIdsResponse> GetFriendsForUserAsync(GetFriendIdsRequest request)
@@ -22,6 +23,16 @@ namespace GrpcServices.Clients
         {
             return await _client.CreateFriendshipIfNotExistsAsync(request);
         }
-    }
 
+        public async Task<FriendObj> GetFriendship(FriendObj request)
+        {
+            return await _client.GetFriendshipAsync(request);
+        }
+
+        public async Task<FriendObj> RemoveFriendshipIfExists(FriendObj request)
+        {
+            return await _client.RemoveFriendshipIfExistsAsync(request);
+        }
+
+    }
 }

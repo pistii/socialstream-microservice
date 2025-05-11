@@ -8,13 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGrpc();
 var services = builder.Services;
 
-services.AddScoped<IFriendGrpcClient, FriendGrpcClient>();
+//Add dependencies
 services.AddScoped<IUserGrpcClient, UserGrpcClient>();
+services.AddScoped<IFriendGrpcClient, FriendGrpcClient>();
+services.AddScoped<INotificationGrpcClient, NotificationGrpcClient>();
+
 
 var app = builder.Build();
 
-
-app.MapGrpcService<GreeterService>();
 app.MapGrpcService<NotificationService>();
 app.MapGrpcService<UserService>();
 app.MapGrpcService<ChatService>();

@@ -1,13 +1,27 @@
 ﻿syntax = "proto3";
+import "google/protobuf/timestamp.proto";
 
 option csharp_namespace = "GrpcServices";
 
 package notification;
 
+service GrpcNotification {
+  rpc SendNotification (NotificationRequest) returns (NotificationResponse);
+  rpc GetAllNotification (GetNotificationByUserPrivateId) returns (GetAllNotificationsResponse);
+  rpc RemoveFriendRequestNotification (RemoveFriendRequestNotificationRequest) returns (NotificationResponse);
+  rpc GetNotificationByTypeAndUserId (RemoveFriendRequestNotificationRequest) returns (NotificationResponse);
+  rpc UpdateOrCreateFriendRequestNotification (NotificationRequest) returns (NotificationResponse);
+  rpc GetNotificationByPublicId (NotificationRequest) returns (NotificationResponse);
+  rpc RemoveNotificationById (NotificationRequest) returns (Status);
+  rpc CreateNotification (CreateNotificationRequest) returns (NotificationResponse);
+}
+
+
 message GetNotificationResponse {
 	string publicId = 1;
-	string authorId = 2;
-	string message = 3;
+	int32 authorId = 2;
+	string authorPublicId = 3;
+	string message = 4;
 }
 
 message NotificationRequest {
@@ -15,8 +29,21 @@ message NotificationRequest {
   string message = 2;
 }
 
+message GetNotificationByUserPrivateId {
+	int32 user_id = 1;
+}
+
 message NotificationResponse {
   bool success = 1;
+  int32 id = 2;
+  string public_id = 3;
+  int32 author_id = 4;
+  string author_public_id = 5;
+  string author_avatar = 6;
+  string message = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp expiration_date = 9;
+  NotificationTypeEnum notification_type = 10;
 }
 
 
@@ -24,7 +51,29 @@ message GetAllNotificationsResponse {
 	repeated GetNotificationResponse notification = 1;
 }
 
-service Notification {
-  rpc SendNotification (NotificationRequest) returns (NotificationResponse);
-  rpc GetAllNotification (NotificationRequest) returns (GetAllNotificationsResponse);
+message RemoveFriendRequestNotificationRequest {
+	NotificationTypeEnum notification_type = 1;
+	int32 user_id = 2;
+}
+
+message CreateNotificationRequest {
+	int32 author_id = 1;
+	string author_public_id = 2;
+	string author_avatar = 3;
+	int32 receiver_id = 4;
+	NotificationTypeEnum notification_type = 5;
+	string message = 6;
+}
+
+
+message Status {
+	bool Success = 1;
+}
+
+enum NotificationTypeEnum {
+	friend_request = 0;
+	friend_request_accepted = 1;
+	friend_request_rejected = 2;
+	birthday = 10;
+	new_post = 20;
 }

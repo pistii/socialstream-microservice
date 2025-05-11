@@ -69,20 +69,35 @@ message GetAllUserResponse {
 	bool success = 2;
 }
 
-message UserDetailsResponse {
+message UserDetailsDtoResponse {
 	string avatar = 1;
 	string first_name = 2;
 	string middle_name = 3;
 	string last_name = 4;
 	string public_id = 5;
+	
+	bool user_found = 6;
+	bool success = 7;
 }
 
+message ReturnsUserPrivateId {
+	int32 user_id = 1;
+	bool user_found = 2;
+}
 
+message FoundUsersResponse {
+	int32 foundUsers = 1;
 
+}
 
 service User {
   rpc GetUser (UserRequest) returns (UserResponse);
   rpc GetUserByIdRequest (UserRequestByPrivateId) returns (UserResponse);
   rpc GetMessagePartnersByUserId (RepeatedChatPartnerIdsRequest) returns (RepeatedChatPartnersResponse);
   rpc GetAllUserById (GetAllUserRequest) returns (GetAllUserResponse);
+  rpc GetUserByPublicId (UserRequest) returns (UserDetailsDtoResponse);
+  rpc GetUserPrivateIdByPublicId (UserRequest) returns (ReturnsUserPrivateId);
+  
+  
+  rpc GetAllUserTest (UserRequest) returns (FoundUsersResponse);
 }

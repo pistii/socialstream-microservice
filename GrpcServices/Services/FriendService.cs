@@ -50,7 +50,8 @@ namespace GrpcServices.Services
             }
             else
             {
-                await _friendRepository.InsertSaveAsync(friend); //Save friend request
+                friend.FriendshipSince = DateTime.Now;
+                await _friendRepository.InsertSaveAsync(friend);
             }
 
             return new FriendObj()
@@ -60,5 +61,36 @@ namespace GrpcServices.Services
                 ReceiverId = request.ReceiverId,
             };
         }
+
+        public async override Task<FriendObj> GetFriendship(FriendObj request, ServerCallContext context)
+        {
+            var friend = new dbModel.Friend(request.ReceiverId, request.AuthorId, request.FriendshipStatusId);
+
+            var friendship = await _friendRepository.FriendshipExists(friend);
+            if (friendship != null)
+            {
+                return new FriendObj()
+                {
+                    AuthorId = friendship.UserId,
+                    ReceiverId = friendship.FriendId,
+                    FriendshipStatusId = friendship.StatusId ?? 2,
+                    Success = true
+                };
+            }
+
+            return new FriendObj()
+            {
+                Success = false,
+            };
+        }
+
+        public async override Task<FriendObj> RemoveFriendshipIfExists(FriendObj request, ServerCallContext context)
+        {
+            var friend = new dbModel.Friend(request.ReceiverId, request.AuthorId, request.FriendshipStatusId);
+            var removed = await _friendRepository.RemoveFriendshipIfExists(friend);
+            if (removed) return new FriendObj() { Success = true };
+            return new FriendObj() { Success = false };
+        }
+
     }
 }

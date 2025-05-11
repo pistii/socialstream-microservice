@@ -19,7 +19,7 @@ namespace GrpcServices
             }
             else
             {
-                throw new RpcException(new Status(StatusCode.Internal, "Unexpected controller response or error."));
+                throw new RpcException(new Grpc.Core.Status(StatusCode.Internal, "Unexpected controller response or error."));
             }
         }
     }

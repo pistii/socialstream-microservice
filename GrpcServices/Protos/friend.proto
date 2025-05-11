@@ -1,4 +1,5 @@
 syntax = "proto3";
+import "google/protobuf/timestamp.proto";
 
 option csharp_namespace = "GrpcServices.Protos";
 
@@ -14,12 +15,21 @@ message GetFriendIdsResponse {
 }
 
 message FriendObj { //This is not mappable object since the different property names
-	int32 receiverId = 1;
-	int32 authorId = 2;
-	int32 friendshipStatusId = 3;
+	bool success = 1;
+
+	int32 receiverId = 2;
+	int32 authorId = 3;
+	int32 friendshipStatusId = 4;
+	google.protobuf.Timestamp friendship_since = 5;
+	
 }
 
+message GetAllFriendshipResponse {
+	repeated FriendObj friends = 1;
+}
 service Friend {
 	rpc GetFriendsForUser (GetFriendIdsRequest) returns (GetFriendIdsResponse); 
 	rpc CreateFriendshipIfNotExists (FriendObj) returns (FriendObj);
+	rpc GetFriendship (FriendObj) returns (FriendObj);
+	rpc RemoveFriendshipIfExists (FriendObj) returns (FriendObj);
 }

@@ -30,8 +30,11 @@ namespace GrpcServices.Services
                     Success = true
                 };
                 response.Users.AddRange(users.Select(
-                    u => ObjectMapper.Map<dbModel.User, UserResponse>(u)
+                    u => ObjectMapper.ExcludeNullMapper<dbModel.User, UserResponse>(u)
                 ));
+
+
+
                 return response;
             }
             
@@ -41,24 +44,27 @@ namespace GrpcServices.Services
 
         public async override Task<UserResponse> GetUser (UserRequest request, ServerCallContext context)
         {
-           
+            
             var response = await _userRepository.GetByPublicId(request.PublicId);
 
             if (response != null)
             {
                 try
                 {
+                    Console.WriteLine("Mapping data for GetUser: " + response);
                     var mappedData = ObjectMapper.Map<dbModel.User, UserResponse>(response);
+                    Console.WriteLine("Data mapped and ready to return: " + mappedData);
                     mappedData.Success = true;
+                    mappedData.UserId = response.userId;
                     return mappedData;
                 }
                 catch (Exception)
                 {
-                    throw new RpcException(new Grpc.Core.Status(StatusCode.Internal, "Failed to map data to UserResponse"));
+                    return new UserResponse() { Success = false };
                 }
 
             }
-            throw new RpcException(new Grpc.Core.Status(StatusCode.Internal, "Failed to receive user."));
+            return new UserResponse() { Success = false };
         }
 
         public async override Task<UserResponse> GetUserByIdRequest(UserRequestByPrivateId request, ServerCallContext context) 
@@ -68,42 +74,22 @@ namespace GrpcServices.Services
             {
                 try
                 {
-                    Console.WriteLine("try to map data...");
-                    var mappedData = new UserResponse() {
-                        UserId = response.userID
-                    };
-                    //response.PublicId = user.PublicId ?? "";
-                    //response.Email = user.Email ?? "";
-                    //response.SecondaryEmailAddress =
-                    //    string.IsNullOrEmpty(user.SecondaryEmailAddress)
-                    //    ? null
-                    //    : new StringValue { Value = user.SecondaryEmailAddress }; // <-- itt figyelj
+                    var mappedData = ObjectMapper.Map<dbModel.User, UserResponse>(response);
+                    mappedData.Personal = ObjectMapper.Map<dbModel.Personal, PersonalResponse>(response.personal);
 
-                    //response.RegistrationDate = user.RegistrationDate != default
-                    //    ? Timestamp.FromDateTime(user.RegistrationDate.ToUniversalTime())
-                    //    : null;
-
-                    //response.LastOnline = user.LastOnline != default
-                    //    ? Timestamp.FromDateTime(user.LastOnline.ToUniversalTime())
-                    //    : null;
-
-                    //response.IsActivated = user.IsActivated;
-                    //response.IsOnlineEnabled = user.IsOnlineEnabled;
-                    //response.Success = true;
-
-                    //var mappedData = ObjectMapper.Map<dbModel.User, UserResponse>(response);
-                    Console.WriteLine("Mapped data: " + mappedData);
+                    Console.WriteLine("DEBUG: Mapped data result: " + mappedData);
 
                     mappedData.Success = true;
                     return mappedData;
                 }
                 catch (Exception)
                 {
-                    throw new RpcException(new Grpc.Core.Status(StatusCode.Internal, "Failed to map data to UserResponse"));
+                    return new UserResponse() { Success = false };
                 }
 
             }
-            throw new RpcException(new Grpc.Core.Status(StatusCode.Internal, "Failed to receive user."));
+            return new UserResponse() { Success = false };
+
         }
 
         public async override Task<RepeatedChatPartnersResponse> GetMessagePartnersByUserId(RepeatedChatPartnerIdsRequest request, ServerCallContext context)
@@ -113,6 +99,56 @@ namespace GrpcServices.Services
             Console.WriteLine("requesting users..." + userIds);
             var db_response = await _userRepository.GetMessagePartnersById(userIds, request.UserId);
             return ObjectMapper.Map<List<Personal>, RepeatedChatPartnersResponse>(db_response.ToList());
+        }
+
+        public async override Task<UserDetailsDtoResponse> GetUserByPublicId(UserRequest request, ServerCallContext context)
+        {
+            var user = await _userRepository.GetByPublicIdAsync<dbModel.User>(request.PublicId);
+            Console.WriteLine("DEBUG: |GetUserByPublicId from userService| GetByPublicIdAsync user: " + user);
+
+            if (user != null)
+            {
+                return new UserDetailsDtoResponse()
+                {
+                    Avatar = user.personal.avatar ?? "",
+                    FirstName = user.personal.firstName,
+                    MiddleName = user.personal.middleName ?? "",
+                    LastName = user.personal.lastName,
+                    PublicId = user.publicId,
+
+                    UserFound = true,
+                    Success = true
+                };
+            }
+            return new UserDetailsDtoResponse()
+            {
+                Success = false,
+                UserFound = false
+            };
+        }
+
+        public async override Task<ReturnsUserPrivateId> GetUserPrivateIdByPublicId(UserRequest request, ServerCallContext context)
+        {
+            var user = await _userRepository.GetByPublicIdAsync<dbModel.User>(request.PublicId);
+            if (user != null)
+            {
+                return new ReturnsUserPrivateId()
+                {
+                    UserId = user.userId,
+                    UserFound = true
+                };
+            }
+            else
+            {
+                return new ReturnsUserPrivateId() { UserFound = false };
+            }
+        }
+
+        public async override Task<FoundUsersResponse> GetAllUserTest(UserRequest request, ServerCallContext context)
+        {
+            var foundUsers = await _userRepository.GetAllUserTest();
+            Console.WriteLine($"DEBUG: Found users in GetAllUserTest: {foundUsers.Count} ");
+            return new FoundUsersResponse() { FoundUsers = foundUsers.Count };
         }
     }
 }
