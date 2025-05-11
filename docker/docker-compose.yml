@@ -160,7 +160,7 @@ services:
             - backend-network
 
     #gateway-api
-    gateway:
+    gateway-api:
         build:
          context: ../
          dockerfile: gateway/Dockerfile
@@ -236,4 +236,4 @@ volumes:
  notification-mysql-data:
  user-mysql-data:
  friend-mysql-data:
- post-mysql-data:   
+ post-mysql-data: 
